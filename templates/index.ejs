@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
+    <link rel="stylesheet" type="text/css" href="/style/main.css" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <fieldset>
+      <legend><label for="tumblr_username">Form</label></legend>
+      <form action="/post-method" method="POST">
+        <fieldset>
+          <legend><label for="tumblr_username">Tumblr username</label></legend>
+          <input type="text" value="" id="tumblr_username" />
+        </fieldset>
+        <input type="submit" value="submit" />
+      </form>
+    </fieldset>
+    <section id="result">
+      <% if (typeof sections !== 'undefined') sections.forEach(function(section) { %>
+      <section>
+        <h1><a href="<%= section.uri %>"><%= section.uri %></a></h1>
+        <p class="photo"><img src="<%= section.photo_uri %>" alt="  " /></p>
+      </section>
+      <% }) %>
+    </section>
+    <ul id="elevator">
+      <li class="prev"><a href="javascript:ss.elevator.prev()">prev</a></li>
+      <li class="next"><a href="javascript:ss.elevator.next()">next</a></li>
+    </ul>
+    <script type="application/javascript" src="/script/dummy.js"></script>
+    <script type="application/javascript" src="/script/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+@charset "utf-8";
+
+*, * * {
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-background-size: 10px 10px;
+  background-color: silver;
+  background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+}
+
+body {
+  margin: 5em 0;
+}
+
+#elevator li {
+  display: block;
+
+  position: fixed;
+  bottom: 0;
+
+  width: 20%;
+  height: 15%;
+}
+
+#elevator li:hover {
+  opacity: .3;
+
+  background-color: black;
+}
+
+#elevator li.prev { left: 0; }
+#elevator li.next { right: 0; }
+
+#elevator li a {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  text-indent: -100000px;
+}
+
+body > h1 {
+  display: none;
+}
+
+body > h1 + fieldset {
+  display: block;
+  z-index: 11000;
+
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 100%;
+
+  background-color: silver;
+
+  text-align: center;
+}
+
+body > h1 + fieldset fieldset {
+  border: none;
+}
+
+body > h1 + fieldset legend,
+body > h1 + fieldset input[type="submit"] {
+  display: none;
+}
+
+body > h1 + fieldset input[type="text"] {
+  width: 95%;
+
+  margin: .15em;
+  padding-left: .3em;
+
+  border: thin solid black;
+  border-radius: .15em;
+
+  font-size: 2em;
+}
+
+input.initial_value {
+  color: gray;
+}
+
+#about {
+  display: none;
+}
+
+#result {
+  width: 100%;
+}
+
+#result > section {
+  width: 100%;
+
+  margin: 0;
+  padding-top: 1em;
+}
+
+#result > section h1 {
+  display: none;
+}
+
+#result > section:first-child ~ section {
+  padding-top: 3em;
+}
+
+#result img {
+  display: block;
+
+  max-width: 90%;
+  min-width: 50px;
+  min-height: 50px;
+
+  margin: 1em auto;
+
+  border: thin solid gray;
+  box-shadow: .4em .4em .4em gray;
+
+  background-color: white;
+}
+
+#result > p {
+  width: 95%;
+
+  margin: 1em auto;
+  padding: .3em;
+
+  border: thin solid black;
+  border-radius: .3em;
+
+  background-color: white;
+
+  font-size: 2em;
+}
+
+#_template {
+  display: none;
+}

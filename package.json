@@ -1,0 +1,8 @@
+{
+  "name": "akarichan",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "2.5.0",
+    "jsdom": "0.2.9"
+  }
+}
