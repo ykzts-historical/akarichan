@@ -56,20 +56,24 @@
   (function($) {
     var _expr = /http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?/;
 
-    $.__defineGetter__('username', function() {
-      return _expr.exec(this.uri)[1];
-    });
-    $.__defineGetter__('page', function() {
-      return (_expr.exec(this.uri)[2] || 1) * 1;
+    Object.defineProperty($, 'username', {
+      get: function() {
+        return _expr.exec(this.uri)[1];
+      },
+      set: function(username) {
+        this.uri = this.get_api_uri(username, this.page);
+        return username;
+      }
     });
 
-    $.__defineSetter__('username', function(username) {
-      this.uri = this.get_api_uri(username, this.page);
-      return username;
-    });
-    $.__defineSetter__('page', function(page) {
-      this.uri = this.get_api_uri(this.username, page);
-      return page;
+    Object.defineProperty($, 'page', {
+      get: function() {
+        return (_expr.exec(this.uri)[2] || 1) * 1;
+      },
+      set: function(page) {
+        this.uri = this.get_api_uri(this.username, page);
+        return page;
+      }
     });
 
     $.init = function() {
@@ -144,12 +148,21 @@
   }
 
   (function($) {
-    $.__defineGetter__('sections', function() {
-      return this.get_sections();
+    Object.defineProperty($, 'sections', {
+      get: function() {
+        var sections = result.getElementsByTagName('section');
+        return Array.prototype.slice.call(sections);
+      }
     });
 
-   $.__defineGetter__('section_positions', function() {
-      return this.get_section_positions();
+    Object.defineProperty($, 'section_positions', {
+      get: function() {
+        var ret = [];
+        this.sections.forEach(function(section) {
+          ret.push(section.offsetTop);
+        });
+        return ret;
+      }
     });
 
     $.init = function() {
@@ -181,19 +194,6 @@
 
     $.next = function() {
       return this.go(+1);
-    };
-
-    $.get_sections = function() {
-      var sections = result.getElementsByTagName('section');
-      return Array.prototype.slice.call(sections);
-    };
-
-   $.get_section_positions = function() {
-      var ret = [];
-      this.sections.forEach(function(section) {
-        ret.push(section.offsetTop);
-      });
-      return ret;
     };
   })(Elevator.prototype);
 
