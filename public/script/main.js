@@ -6,7 +6,6 @@
   function SiteScript() {
     var title = doc.getElementsByTagName('title').item(0).textContent;
     this.ap = new AppendPage(location.href, title);
-    this.elevator = new Elevator;
     this.add_event();
   }
 
@@ -76,6 +75,24 @@
       }
     });
 
+
+    Object.defineProperty($, 'sections', {
+      get: function() {
+        var sections = result.getElementsByTagName('section');
+        return Array.prototype.slice.call(sections);
+      }
+    });
+
+    Object.defineProperty($, 'section_positions', {
+      get: function() {
+        var ret = [];
+        this.sections.forEach(function(section) {
+          ret.push(section.offsetTop);
+        });
+        return ret;
+      }
+    });
+
     $.init = function() {
       if (this.username)
         this.add_event();
@@ -92,12 +109,12 @@
     };
 
     $.window_scroll = function(remove_event) {
-      var sections = result.getElementsByTagName('section');
-      if (sections.length === 0) {
+      var len = this.sections.length;
+      if (len === 0) {
         remove_event();
         return;
       }
-      if (win.scrollY < sections.item(sections.length - 2).offsetTop)
+      if (win.scrollY < this.sections[len-2].offsetTop)
         return;
       remove_event();
       this.load_next();
@@ -143,41 +160,15 @@
         path += '?page=' + page;
       return 'http://' + HOST + path;
     };
-  })(AppendPage.prototype);
-
-  function Elevator() {
-    this.init();
-  }
-
-  (function($) {
-    Object.defineProperty($, 'sections', {
-      get: function() {
-        var sections = result.getElementsByTagName('section');
-        return Array.prototype.slice.call(sections);
-      }
-    });
-
-    Object.defineProperty($, 'section_positions', {
-      get: function() {
-        var ret = [];
-        this.sections.forEach(function(section) {
-          ret.push(section.offsetTop);
-        });
-        return ret;
-      }
-    });
-
-    $.init = function() {
-      return;
-    };
 
     $.current_section = function() {
       var pos = win.scrollY;
-      var _ = this.section_positions;
-      _.sort(function(a, b) {
-        return Math.abs(a - pos) - Math.abs(b - pos);
-      });
-      return this.sections[this.section_positions.indexOf(_[0])];
+      for (var i=this.sections.length; i>=0; i--) {
+        var sec_pos = this.section_positions[i];
+        if (sec_pos-pos <= 0)
+          break;
+      }
+      return this.sections[this.section_positions.indexOf(sec_pos)];
     };
 
     $.go = function(num) {
@@ -197,7 +188,7 @@
     $.next = function() {
       return this.go(+1);
     };
-  })(Elevator.prototype);
+  })(AppendPage.prototype);
 
   win.ss = new SiteScript();
 })(window.document, window);
