@@ -4,8 +4,7 @@
   var result = doc.getElementById('result');
 
   function SiteScript() {
-    var title = doc.getElementsByTagName('title').item(0).textContent;
-    this.ap = new AppendPage(location.href, title);
+    this.ap = new AppendPage(location.href);
     this.add_event();
   }
 
@@ -46,14 +45,36 @@
     };
   })(SiteScript.prototype);
 
-  function AppendPage(uri, title) {
-    this.uri = uri;
-    this.page_title = title;
+  function AppendPage(uri) {
+    this._uri = uri;
     this.init();
   }
 
   (function($) {
     var _expr = /http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?/;
+    var _page_title_node = doc.getElementsByTagName('title')[0];
+
+    Object.defineProperty($, 'uri', {
+      get: function() {
+        return this._uri;
+      },
+      set: function(uri) {
+        this._uri = uri;
+        if ('pushState' in win.history)
+          win.history.pushState({}, this.page_title, uri);
+        return uri;
+      }
+    });
+
+    Object.defineProperty($, 'page_title', {
+      get: function() {
+        return _page_title_node.textContent;
+      },
+      set: function(title) {
+        _page_title_node.textContent = title;
+        return title;
+      }
+    });
 
     Object.defineProperty($, 'username', {
       get: function() {
@@ -74,7 +95,6 @@
         return page;
       }
     });
-
 
     Object.defineProperty($, 'sections', {
       get: function() {
@@ -132,7 +152,7 @@
           return;
         var res = req.responseXML;
         var sections = res.querySelectorAll('#result > section');
-        this.page_title = res.getElementsByTagName('title').item(0).textContent;
+        this.page_title = res.getElementsByTagName('title')[0].textContent;
         this.append_sections(sections);
         this.add_event();
       }.bind(this);
@@ -145,13 +165,6 @@
         var section = sections.item(i);
         result.appendChild(section);
       }
-      this.push_state();
-    };
-
-    $.push_state = function() {
-      doc.getElementsByTagName('title').item(0).textContent = this.page_title;
-      if ('pushState' in win.history)
-        win.history.pushState({}, this.page_title, this.uri);
     };
 
     $.get_api_uri = function(username, page) {
