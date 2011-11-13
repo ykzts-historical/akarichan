@@ -93,8 +93,10 @@
 
     $.window_scroll = function(remove_event) {
       var sections = result.getElementsByTagName('section');
-      if (sections.length === 0)
+      if (sections.length === 0) {
         remove_event();
+        return;
+      }
       if (win.scrollY < sections.item(sections.length - 2).offsetTop)
         return;
       remove_event();
