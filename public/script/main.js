@@ -11,6 +11,7 @@
   (function($) {
     $.add_event = function()  {
       doc.addEventListener('DOMContentLoaded', this.loaded.bind(this), false);
+      win.addEventListener('popstate', this.popstate.bind(this), false);
     };
 
     $.init = function() {
@@ -42,6 +43,15 @@
         this.ap.request();
         return false;
       }.bind(this);
+    };
+
+    $.popstate = function() {
+      if (this.ap.uri === location.href)
+        return;
+      win.scroll(0, 0);
+      this.init();
+      this.ap._uri = location.href;
+      this.ap.request();
     };
   })(SiteScript.prototype);
 
@@ -190,7 +200,7 @@
       i = i + num;
       if (i < 0 || i > this.sections.length - 1)
         return -1;
-      scroll(0, this.section_positions[i]);
+      win.scroll(0, this.section_positions[i]);
       return this.sections[i];
     };
 
