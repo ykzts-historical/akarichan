@@ -17,7 +17,7 @@
     $.init = function() {
       var range = document.createRange();
       range.selectNodeContents(result);
-      range.deleteContent();
+      range.deleteContents();
     };
 
     $.loaded = function() {
