@@ -65,62 +65,64 @@
     var _expr = /(?:http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?)?/;
     var _page_title_node = doc.getElementsByTagName('title')[0];
 
-    Object.defineProperty($, 'uri', {
-      get: function() {
-        return _uri;
+    Object.defineProperties($, {
+      uri: {
+        get: function() {
+          return _uri;
+        },
+        set: function(uri) {
+          _uri = uri;
+          if ('pushState' in win.history)
+            win.history.pushState({}, this.page_title, uri);
+          return uri;
+        }
       },
-      set: function(uri) {
-        _uri = uri;
-        if ('pushState' in win.history)
-          win.history.pushState({}, this.page_title, uri);
-        return uri;
-      }
-    });
 
-    Object.defineProperty($, 'page_title', {
-      get: function() {
-        return _page_title_node.textContent;
+      page_title: {
+        get: function() {
+          return _page_title_node.textContent;
+        },
+        set: function(title) {
+          _page_title_node.textContent = title;
+          return title;
+        }
       },
-      set: function(title) {
-        _page_title_node.textContent = title;
-        return title;
-      }
-    });
 
-    Object.defineProperty($, 'username', {
-      get: function() {
-        return _expr.exec(this.uri)[1];
+      username: {
+        get: function() {
+          return _expr.exec(this.uri)[1];
+        },
+        set: function(username) {
+          this.uri = this.get_api_uri(username, this.page);
+          return username;
+        }
       },
-      set: function(username) {
-        this.uri = this.get_api_uri(username, this.page);
-        return username;
-      }
-    });
 
-    Object.defineProperty($, 'page', {
-      get: function() {
-        return (_expr.exec(this.uri)[2] || 1) * 1;
+      page: {
+        get: function() {
+          return (_expr.exec(this.uri)[2] || 1) * 1;
+        },
+        set: function(page) {
+          this.uri = this.get_api_uri(this.username, page);
+          return page;
+        }
       },
-      set: function(page) {
-        this.uri = this.get_api_uri(this.username, page);
-        return page;
-      }
-    });
 
-    Object.defineProperty($, 'sections', {
-      get: function() {
-        var sections = result.getElementsByTagName('section');
-        return Array.prototype.slice.call(sections);
-      }
-    });
+      sections: {
+        get: function() {
+          var sections = result.getElementsByTagName('section');
+          return Array.prototype.slice.call(sections);
+        }
+      },
 
-    Object.defineProperty($, 'section_positions', {
-      get: function() {
-        var ret = [];
-        this.sections.forEach(function(section) {
-          ret.push(section.offsetTop);
-        });
-        return ret;
+      section_positions: {
+        get: function() {
+          var ret = [];
+          this.sections.forEach(function(section) {
+            ret.push(section.offsetTop);
+          });
+          return ret;
+        }
       }
     });
 
