@@ -3,8 +3,7 @@
   var result = doc.getElementById('result');
 
   function SiteScript() {
-    this.ap = new AppendPage();
-    this.ap.uri = location.href;
+    this.ap = new AppendPage(location.href);
     this.add_event();
   }
 
@@ -51,12 +50,13 @@
         return;
       win.scroll(0, 0);
       this.init();
-      this.ap._uri = location.href;
+      this.ap.uri = location.href;
       this.ap.request();
     };
   })(SiteScript.prototype);
 
-  function AppendPage() {
+  function AppendPage(uri) {
+    this.uri = uri;
     this.init();
   }
 
