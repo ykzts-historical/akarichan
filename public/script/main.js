@@ -15,8 +15,9 @@
     };
 
     $.init = function() {
-      while (result.hasChildNodes())
-        result.removeChild(result.firstChild);
+      var range = document.createRange();
+      range.selectNodeContents(result);
+      range.deleteContent();
     };
 
     $.loaded = function() {
@@ -160,21 +161,15 @@
       req.onreadystatechange = function() {
         if (req.readyState !== 4 || req.status !== 200)
           return;
+        var range = doc.createRange();
         var res = req.responseXML;
-        var sections = res.querySelectorAll('#result > section');
+        range.selectNodeContents(res.getElementById('result'));
+        result.appendChild(range.extractContents());
         this.page_title = res.getElementsByTagName('title')[0].textContent;
-        this.append_sections(sections);
         this.add_event();
       }.bind(this);
       req.open('GET', this.uri);
       req.send(null);
-    };
-
-    $.append_sections = function(sections) {
-      for (var i=0,len=sections.length; i<len; i++) {	  
-        var section = sections.item(i);
-        result.appendChild(section);
-      }
     };
 
     $.get_api_uri = function(username, page) {
