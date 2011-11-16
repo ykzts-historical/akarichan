@@ -1,10 +1,10 @@
 (function(doc, win) {
   var HOST = location.host;
-  var pathname = location.pathname + (location.search || '');
   var result = doc.getElementById('result');
 
   function SiteScript() {
-    this.ap = new AppendPage(location.href);
+    this.ap = new AppendPage();
+    this.ap.uri = location.href;
     this.add_event();
   }
 
@@ -56,21 +56,21 @@
     };
   })(SiteScript.prototype);
 
-  function AppendPage(uri) {
-    this._uri = uri;
+  function AppendPage() {
     this.init();
   }
 
   (function($) {
-    var _expr = /http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?/;
+    var _uri = '';
+    var _expr = /(?:http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?)?/;
     var _page_title_node = doc.getElementsByTagName('title')[0];
 
     Object.defineProperty($, 'uri', {
       get: function() {
-        return this._uri;
+        return _uri;
       },
       set: function(uri) {
-        this._uri = uri;
+        _uri = uri;
         if ('pushState' in win.history)
           win.history.pushState({}, this.page_title, uri);
         return uri;
