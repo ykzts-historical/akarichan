@@ -77,7 +77,8 @@
           return _page_title_node.textContent;
         },
         set: function(title) {
-          _page_title_node.textContent = title;
+          var text_node = document.createTextNode(title);
+          _page_title_node.replaceChild(text_node, _page_title_node.firstChild);
           return title;
         }
       },
