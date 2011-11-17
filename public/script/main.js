@@ -133,10 +133,9 @@
 
     $.add_event = function() {
       var self = this;
-      win.addEventListener('scroll', function() {
-        var func = arguments.callee;
+      win.addEventListener('scroll', function onscroll() {
         self.window_scroll(function() {
-          win.removeEventListener('scroll', func);
+          win.removeEventListener('scroll', onscroll);
         });
       }, false);
     };
