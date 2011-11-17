@@ -77,9 +77,30 @@
           return _page_title_node.textContent;
         },
         set: function(title) {
-          var text_node = document.createTextNode(title);
+          var text_node = doc.createTextNode(title);
           _page_title_node.replaceChild(text_node, _page_title_node.firstChild);
           return title;
+        }
+      },
+
+      message: {
+	get: function() {
+	  return doc.getElementById('message');
+	},
+        set: function(message) {
+          var _message_node = this.message;
+          var text_node = doc.createTextNode(message);
+          if (!_message_node) {
+            _message_node = doc.createElement('p');
+            _message_node.setAttribute('id', 'message');
+            result.appendChild(_message_node);
+          }
+          if (_message_node.firstChild) {
+	    _message_node.replaceChild(text_node, _message_node.firstChild);
+          } else {
+            _message_node.appendChild(text_node);
+          }
+          return _message_node;
         }
       },
 
@@ -159,14 +180,19 @@
     };
 
     $.request = function() {
+      this.message = 'loading...';
       var req = new XMLHttpRequest();
       req.onreadystatechange = function() {
-        if (req.readyState !== 4 || req.status !== 200)
+        if (req.readyState !== 4)
           return;
+        if (req.status !== 200) {
+          this.message = '404 not found.';
+          return;
+        }
         var range = doc.createRange();
         var res = req.responseXML;
         range.selectNodeContents(res.getElementById('result'));
-        result.appendChild(range.extractContents());
+        result.replaceChild(range.extractContents(), this.message);
         this.page_title = res.getElementsByTagName('title')[0].textContent;
         this.add_event();
       }.bind(this);
