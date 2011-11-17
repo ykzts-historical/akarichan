@@ -1,5 +1,5 @@
 
-// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+// @cite=https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {
     if (typeof this !== "function") {
