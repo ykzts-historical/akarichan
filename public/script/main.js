@@ -23,7 +23,7 @@
         text_field.removeAttribute('class');
       }
       text_field.onfocus = function() {
-	var initial_value = text_field.getAttribute('value');
+        var initial_value = text_field.getAttribute('value');
         if (text_field.value === initial_value) {
           text_field.value = '';
           text_field.removeAttribute('class');
@@ -84,9 +84,9 @@
       },
 
       message: {
-	get: function() {
-	  return doc.getElementById('message');
-	},
+        get: function() {
+          return doc.getElementById('message');
+        },
         set: function(message) {
           var _message_node = this.message;
           var text_node = doc.createTextNode(message);
@@ -96,7 +96,7 @@
             result.appendChild(_message_node);
           }
           if (_message_node.firstChild) {
-	    _message_node.replaceChild(text_node, _message_node.firstChild);
+            _message_node.replaceChild(text_node, _message_node.firstChild);
           } else {
             _message_node.appendChild(text_node);
           }
