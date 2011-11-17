@@ -11,6 +11,10 @@ module.exports = function(req, res) {
   var page = (req.query.page || 1) * 1;
 
   pv.get(username, page, function(sections) {
+    if (!sections.length) {	
+      res.send(404);
+      return;
+    }
     res.header('Content-type', 'application/xhtml+xml');
     res.render('index', {
       title: [page, username, settings.TITLE].join(' < '),
