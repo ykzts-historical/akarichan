@@ -13,12 +13,6 @@
       win.addEventListener('popstate', this.popstate.bind(this), false);
     };
 
-    $.init = function() {
-      var range = document.createRange();
-      range.selectNodeContents(result);
-      range.deleteContents();
-    };
-
     $.loaded = function() {
       var form = doc.getElementsByTagName('form').item(0);
       var text_field = doc.getElementById('tumblr_username');
@@ -36,8 +30,8 @@
         }
       };
       form.onsubmit = function() {  
-        this.init();
         text_field.blur();
+        this.ap.refresh();
         this.ap.username = text_field.value;
         this.ap.page = 1;
         this.ap.request();
@@ -49,7 +43,7 @@
       if (this.ap.uri === location.href)
         return;
       win.scroll(0, 0);
-      this.init();
+      this.ap.refresh();
       this.ap.uri = location.href;
       this.ap.request();
     };
@@ -129,6 +123,12 @@
     $.init = function() {
       if (this.username)
         this.add_event();
+    };
+
+    $.refresh = function() {
+      var range = document.createRange();
+      range.selectNodeContents(result);
+      range.deleteContents();
     };
 
     $.add_event = function() {
