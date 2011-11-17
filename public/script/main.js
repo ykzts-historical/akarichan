@@ -39,12 +39,12 @@
       }.bind(this);
     };
 
-    $.popstate = function() {
+    $.popstate = function(event) {
       if (this.ap.uri === location.href)
         return;
       win.scroll(0, 0);
       this.ap.refresh();
-      this.ap.uri = location.href;
+      this.ap.uri = event.state.uri;
       this.ap.request();
     };
   })(SiteScript.prototype);
@@ -65,9 +65,11 @@
           return _uri;
         },
         set: function(uri) {
+          if (uri === _uri)
+            return uri;
           _uri = uri;
           if ('pushState' in win.history)
-            win.history.pushState({}, this.page_title, uri);
+            win.history.pushState({uri: uri}, this.page_title, uri);
           return uri;
         }
       },
