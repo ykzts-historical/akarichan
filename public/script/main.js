@@ -55,25 +55,10 @@
   }
 
   (function($) {
-    var _uri = '';
     var _expr = /(?:http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?)?/;
     var _page_title_node = doc.getElementsByTagName('title')[0];
 
     Object.defineProperties($, {
-      uri: {
-        get: function() {
-          return _uri;
-        },
-        set: function(uri) {
-          if (uri === _uri)
-            return uri;
-          _uri = uri;
-          if ('pushState' in win.history)
-            win.history.pushState({uri: uri}, this.page_title, uri);
-          return uri;
-        }
-      },
-
       page_title: {
         get: function() {
           return _page_title_node.textContent;
@@ -182,6 +167,8 @@
     };
 
     $.request = function() {
+      if (this.uri !== location.href && 'pushState' in win.history)
+        win.history.pushState({uri: this.uri}, this.page_title, this.uri);
       this.message = 'loading...';
       var req = new XMLHttpRequest();
       req.onreadystatechange = function() {
