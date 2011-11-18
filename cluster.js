@@ -1,7 +1,10 @@
-var os = require('os');
-var cluster = require('cluster');
 
 process.env.NODE_PATH = '/usr/local/lib/node_modules';
+process.env.NODE_ENV = 'production';
+
+var os = require('os');
+var cluster = require('cluster');
+var app = require('./app');
 
 if (cluster.isMaster) {
   for (var i=0; i<os.cpus().length; i++) {   
@@ -11,5 +14,5 @@ if (cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  require('./app');
+  app.listen(app.settings.port);
 }

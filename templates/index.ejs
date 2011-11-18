@@ -25,6 +25,9 @@
         <p class="photo"><img src="<%= section.photo_uri %>" alt="  " /></p>
       </section>
       <% }) %>
+      <% if (typeof status !== 'undefined' && status === 404) { %>
+      <p id="message">404 not found.</p>
+      <% } %>
     </section>
     <script type="application/javascript" src="/script/dummy.js"></script>
     <script type="application/javascript" src="/script/main.js"></script>

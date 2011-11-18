@@ -12,7 +12,7 @@ module.exports = function(req, res) {
 
   pv.get(username, page, function(sections) {
     if (!sections.length) {	
-      res.send(404);
+      res.render('index', {title: '404 not found', status: 404});
       return;
     }
     if (res._header)
