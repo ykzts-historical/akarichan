@@ -210,6 +210,8 @@
     };
 
     $.current_section = function() {
+      if (!this.sections.length)
+        return null;
       var pos = win.scrollY;
       for (var i=this.sections.length; i>=0; i--) {
         var sec_pos = this.section_positions[i];
@@ -221,6 +223,8 @@
 
     $.go = function(num) {
       var current = this.current_section();
+      if (!current)
+        return -1;
       var i = this.section_positions.indexOf(current.offsetTop);
       i = i + num;
       if (i < 0 || i > this.sections.length - 1)
