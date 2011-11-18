@@ -4,6 +4,7 @@
 
   function SiteScript() {
     this.ap = new AppendPage(location.href);
+    this.set_elevator();
     this.add_event();
   }
 
@@ -46,6 +47,18 @@
       this.ap.refresh();
       this.ap.uri = event.state.uri;
       this.ap.request();
+    };
+
+    $.set_elevator = function() {
+      var list_node = doc.createElement('ul');
+      doc.getElementsByTagName('body')[0].appendChild(list_node);
+      list_node.setAttribute('id', 'elevator');
+      ['prev', 'next'].forEach(function(value) {
+        var list_item = doc.createElement('li');
+        list_node.appendChild(list_item);
+        list_item.setAttribute('class', value);
+        list_item.addEventListener('click', this.ap[value].bind(this.ap));
+      }.bind(this));
     };
   })(SiteScript.prototype);
 
