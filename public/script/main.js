@@ -191,9 +191,10 @@
           this.message = '404 not found.';
           return;
         }
-        var range = doc.createRange();
         var res = req.responseXML;
-        range.selectNodeContents(res.getElementById('result'));
+        var _ = doc.importNode(res.getElementById('result'), true);
+        var range = doc.createRange();
+        range.selectNodeContents(_);
         result.replaceChild(range.extractContents(), this.message);
         this.page_title = res.getElementsByTagName('title')[0].textContent;
         this.add_event();
