@@ -15,7 +15,9 @@ module.exports = function(req, res) {
       res.send(404);
       return;
     }
-    res.header('Content-type', 'application/xhtml+xml');
+    if (res._header)
+      delete res._header;
+    res.contentType('xhtml');
     res.render('index', {
       title: [page, username, settings.TITLE].join(' < '),
       sections: sections

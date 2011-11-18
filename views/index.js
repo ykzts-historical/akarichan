@@ -4,7 +4,7 @@ var path = require('path');
 var settings = require('../settings');
 
 exports.index = function(req, res) {
-  res.header('Content-type', 'application/xhtml+xml');
+  res.contentType('xhtml');
   res.render('index', {title: settings.TITLE});
 };
 
