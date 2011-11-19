@@ -9,8 +9,6 @@ app.configure(function() {
   app.set('view engine', 'ejs');
   app.set('view options', {layout: false});
   app.set('views', settings.TEMPLATE_DIR);
-  app.use(app.router);
-  app.use(express.static(settings.STATIC_DIR));
 });
 
 app.configure('production', function() {
@@ -23,6 +21,8 @@ app.configure('development', function() {
     dumpExceptions: true,
     showStack: true
   }));
+  app.use(app.router);
+  app.use(express.static(settings.STATIC_DIR));
 });
 
 routes.forEach(function(route) {
