@@ -127,16 +127,16 @@
       sections: {
         get: function() {
           var sections = result.getElementsByTagName('section');
-          return Array.prototype.slice.call(sections);
+          return sections;
         }
       },
 
       section_positions: {
         get: function() {
           var ret = [];
-          this.sections.forEach(function(section) {
-            ret.push(section.offsetTop);
-          });
+          var sections = this.sections;
+          for (var i=0, len=sections.length; i<len; i++)
+            ret.push(sections[i].offsetTop);
           return ret;
         }
       }
