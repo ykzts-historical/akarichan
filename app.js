@@ -1,4 +1,5 @@
 
+var path = require('path');
 var express = require('express');
 var routes = require('./routes');
 var settings = require('./settings');
@@ -10,7 +11,8 @@ app.configure(function() {
   app.set('view options', {layout: true});
   app.set('views', settings.TEMPLATE_DIR);
   app.use(function(req, res, next) {
-    res.contentType('xhtml');
+    var ext = path.extname(req.url) || '.xhtml';
+    res.contentType(ext);
     next();
   });
 });
