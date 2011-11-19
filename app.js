@@ -9,6 +9,10 @@ app.configure(function() {
   app.set('view engine', 'ejs');
   app.set('view options', {layout: true});
   app.set('views', settings.TEMPLATE_DIR);
+  app.use(function(req, res, next) {
+    res.contentType('xhtml');
+    next();
+  });
 });
 
 app.configure('production', function() {

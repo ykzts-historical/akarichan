@@ -15,9 +15,6 @@ module.exports = function(req, res) {
       res.render('404', {title: '404 not found', status: 404});
       return;
     }
-    if (res._header)
-      delete res._header;
-    res.contentType('xhtml');
     res.render('user', {
       title: [page, username, settings.TITLE].join(' < '),
       sections: sections
