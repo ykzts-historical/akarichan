@@ -1,5 +1,6 @@
 (function(doc, win) {
   var HOST = location.host;
+  var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
 
   function SiteScript() {
@@ -23,21 +24,22 @@
         text_field.value = this.ap.username;
         text_field.removeAttribute('class');
       }
-      text_field.onfocus = function() {
+      text_field.addEventListener('focus', function() {
         var initial_value = text_field.getAttribute('value');
         if (text_field.value === initial_value) {
           text_field.value = '';
           text_field.removeAttribute('class');
         }
-      };
-      form.onsubmit = function() {  
+      }, false);
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
         text_field.blur();
         this.ap.refresh();
         this.ap.username = text_field.value;
         this.ap.page = 1;
         this.ap.request();
         return false;
-      }.bind(this);
+      }.bind(this), false);
     };
 
     $.popstate = function(event) {
@@ -51,7 +53,7 @@
 
     $.set_elevator = function() {
       var list_node = doc.createElement('ul');
-      doc.getElementsByTagName('body')[0].appendChild(list_node);
+      body.appendChild(list_node);
       list_node.setAttribute('id', 'elevator');
       ['prev', 'next'].forEach(function(value) {
         var list_item = doc.createElement('li');
@@ -188,7 +190,7 @@
         if (req.readyState !== 4)
           return;
         if (req.status !== 200) {
-          this.message = '404 not found.';
+          this.page_title = this.message = '404 not found.';
           return;
         }
         var res = req.responseXML;
