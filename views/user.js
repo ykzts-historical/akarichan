@@ -12,13 +12,13 @@ module.exports = function(req, res) {
 
   pv.get(username, page, function(sections) {
     if (!sections.length) {	
-      res.render('index', {title: '404 not found', status: 404});
+      res.render('404', {title: '404 not found', status: 404});
       return;
     }
     if (res._header)
       delete res._header;
     res.contentType('xhtml');
-    res.render('index', {
+    res.render('user', {
       title: [page, username, settings.TITLE].join(' < '),
       sections: sections
     });

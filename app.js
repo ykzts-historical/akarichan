@@ -7,7 +7,7 @@ var app = module.exports = express.createServer();
 app.configure(function() {
   app.set('port', 3000);
   app.set('view engine', 'ejs');
-  app.set('view options', {layout: false});
+  app.set('view options', {layout: true});
   app.set('views', settings.TEMPLATE_DIR);
 });
 
