@@ -12,11 +12,11 @@
   (function($) {
     $.add_event = function()  {
       doc.addEventListener('DOMContentLoaded', this.loaded.bind(this), false);
-      win.addEventListener('popstate', this.popstate.bind(this), false);
+      win.addEventListener('popstate', this.onpopstate.bind(this), false);
     };
 
     $.loaded = function() {
-      var form = doc.getElementsByTagName('form').item(0);
+      var form = doc.getElementsByTagName('form')[0];
       var text_field = doc.getElementById('tumblr_username');
       text_field.setAttribute('value', 'press any tumblr username');
       text_field.setAttribute('class', 'initial_value');
@@ -24,13 +24,8 @@
         text_field.value = this.ap.username;
         text_field.removeAttribute('class');
       }
-      text_field.addEventListener('focus', function() {
-        var initial_value = text_field.getAttribute('value');
-        if (text_field.value === initial_value) {
-          text_field.value = '';
-          text_field.removeAttribute('class');
-        }
-      }, false);
+      text_field.addEventListener('focus', this.onfocus, false);
+      text_field.addEventListener('blur', this.onfocus, false);
       form.addEventListener('submit', function(event) {
         event.preventDefault();
         text_field.blur();
@@ -42,7 +37,18 @@
       }.bind(this), false);
     };
 
-    $.popstate = function(event) {
+    $.onfocus = function() {
+      var default_value = this.getAttribute('value');
+      if (this.value === default_value) {
+        this.value = '';
+        this.removeAttribute('class');
+      } else if (this.value === '') {
+        this.value = default_value;
+        this.setAttribute('class', 'initial_value');
+      }
+    };
+
+    $.onpopstate = function(event) {
       if (this.ap.uri === location.href)
         return;
       win.scroll(0, 0);
