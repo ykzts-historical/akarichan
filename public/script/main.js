@@ -28,6 +28,8 @@
         case 107: // k
           this.ap.prev();
           break;
+        case 111: // o
+          this.ap.open();
       }
     };
 
@@ -273,6 +275,11 @@
 
     $.next = function() {
       return this.go(+1);
+    };
+
+    $.open = function() {
+      var uri = this.current_section().getElementsByClassName('uri')[0].textContent;
+      return win.open(uri, '_blank');
     };
   })(AppendPage.prototype);
 
