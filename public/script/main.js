@@ -23,9 +23,9 @@
       if (event.keyCode === 32) {
         event.preventDefault();
         if (event.shiftKey) {
-          ss.ap.prev();
+          this.ap.prev();
         } else {
-          ss.ap.next();
+          this.ap.next();
         }
       }
     };
