@@ -11,6 +11,7 @@
   (function($) {
     $.add_event = function()  {
       doc.addEventListener('DOMContentLoaded', this.loaded.bind(this), false);
+      win.addEventListener('keypress', this.onkeypress.bind(this), false);
       win.addEventListener('popstate', this.onpopstate.bind(this), false);
     };
 
@@ -20,13 +21,13 @@
     };
 
     $.onkeypress = function(event) {
-      if (event.keyCode === 32) {
-        event.preventDefault();
-        if (event.shiftKey) {
-          this.ap.prev();
-        } else {
+      switch (event.keyCode) {
+        case 106: // j
           this.ap.next();
-        }
+          break;
+        case 107: // k
+          this.ap.prev();
+          break;
       }
     };
 
