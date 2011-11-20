@@ -17,7 +17,6 @@ app.configure(function() {
     page: ''
   });
   app.set('views', settings.TEMPLATE_DIR);
-  app.use(express.logger({format:':method :url'}));
   app.use(express.bodyParser());
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
@@ -27,6 +26,7 @@ app.configure(function() {
 });
 
 app.configure('production', function() {
+  app.use(express.logger({format:':method :url'}));
   app.use(express.errorHandler());
 });
 
