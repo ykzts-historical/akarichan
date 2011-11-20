@@ -15,36 +15,8 @@
     };
 
     $.loaded = function() {
-      var form = doc.getElementsByTagName('form')[0];
-      var text_field = doc.getElementById('tumblr_username');
-      text_field.setAttribute('value', 'press any tumblr username');
-      if (!text_field.value || text_field.value === text_field.getAttribute('value'))
-        text_field.setAttribute('class', 'initial_value');
-      text_field.addEventListener('focus', this.onfocus, false);
-      text_field.addEventListener('blur', this.onfocus, false);
-      form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        if (!text_field.value)
-          return false;
-        text_field.blur();
-        this.ap.refresh();
-        this.ap.username = text_field.value;
-        this.ap.page = 1;
-        this.ap.request();
-        return false;
-      }.bind(this), false);
+      this.form = new Form(this.ap);
       this.set_elevator();
-    };
-
-    $.onfocus = function() {
-      var default_value = this.getAttribute('value');
-      if (this.value === default_value) {
-        this.value = '';
-        this.removeAttribute('class');
-      } else if (this.value === '') {
-        this.value = default_value;
-        this.setAttribute('class', 'initial_value');
-      }
     };
 
     $.onkeypress = function(event) {
@@ -79,6 +51,48 @@
       }.bind(this));
     };
   })(SiteScript.prototype);
+
+  function Form(ap) {
+    this.form = doc.getElementsByTagName('form')[0];
+    this.text_field = doc.getElementById('tumblr_username');
+    this.ap = ap;
+    this.init();
+  }
+
+  (function($) {
+    $.init = function() {
+      this.text_field.setAttribute('value', 'press any tumblr username');
+      if (!this.text_field.value || this.text_field.value === this.text_field.getAttribute('value'))
+        this.text_field.setAttribute('class', 'initial_value');
+      this.text_field.addEventListener('focus', this.onfocus, false);
+      this.text_field.addEventListener('blur', this.onfocus, false);
+      this.form.addEventListener('submit', this.onsubmit.bind(this), false);
+    };
+
+    $.onsubmit = function() {
+      event.preventDefault();
+      if (!this.text_field.value)
+        return false;
+      this.text_field.blur();
+      this.ap.refresh();
+      this.ap.username = this.text_field.value;
+      this.ap.page = 1;
+      this.ap.request();
+      return false;
+    };
+
+    $.onfocus = function() {
+      var default_value = this.getAttribute('value');
+      if (this.value === default_value) {
+        this.value = '';
+        this.removeAttribute('class');
+      } else if (this.value === '') {	  
+        this.value = default_value;
+        this.setAttribute('class', 'initial_value');
+      }
+    };
+  })(Form.prototype);
+
 
   function AppendPage(uri) {
     this.uri = uri;
