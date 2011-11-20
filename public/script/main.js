@@ -19,11 +19,8 @@
       var form = doc.getElementsByTagName('form')[0];
       var text_field = doc.getElementById('tumblr_username');
       text_field.setAttribute('value', 'press any tumblr username');
-      text_field.setAttribute('class', 'initial_value');
-      if (this.ap.username) {
-        text_field.value = this.ap.username;
-        text_field.removeAttribute('class');
-      }
+      if (!text_field.value || text_field.value === text_field.getAttribute('value'))
+        text_field.setAttribute('class', 'initial_value');
       text_field.addEventListener('focus', this.onfocus, false);
       text_field.addEventListener('blur', this.onfocus, false);
       form.addEventListener('submit', function(event) {
