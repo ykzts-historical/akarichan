@@ -24,6 +24,8 @@
       text_field.addEventListener('blur', this.onfocus, false);
       form.addEventListener('submit', function(event) {
         event.preventDefault();
+        if (!text_field.value)
+          return false;
         text_field.blur();
         this.ap.refresh();
         this.ap.username = text_field.value;
