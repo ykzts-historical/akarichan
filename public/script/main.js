@@ -1,10 +1,11 @@
 (function(doc, win) {
   var HOST = location.host;
+  var URI = location.href;
   var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
 
   function SiteScript() {
-    this.ap = new AppendPage(location.href);
+    this.ap = new AppendPage(URI);
     this.add_event();
   }
 
@@ -42,7 +43,7 @@
     };
 
     $.onpopstate = function(event) {
-      if (this.ap.uri === location.href)
+      if (this.ap.uri === URI)
         return;
       win.scroll(0, 0);
       this.ap.refresh();
@@ -223,7 +224,7 @@
     };
 
     $.request = function() {
-      if (this.uri !== location.href && 'pushState' in win.history)
+      if (this.uri !== URI && 'pushState' in win.history)
         win.history.pushState({uri: this.uri}, this.page_title, this.uri);
       this.message = 'loading...';
       var req = new XMLHttpRequest();
