@@ -4,8 +4,15 @@
   var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
 
+  var KEY_BIND = {
+    j: 'next',
+    k: 'prev',
+    o: 'open',
+    f: 'focus'
+  };
+
   function SiteScript() {
-    this.ap = new AppendPage(URI);
+    this.ap = new AppendPage(this);
     this.add_event();
   }
 
@@ -17,29 +24,18 @@
     };
 
     $.loaded = function() {
-      this.form = new Form(this.ap);
+      this.form = new Form(this);
       this.set_elevator();
     };
 
     $.onkeypress = function(event) {
+      var press_key = String.fromCharCode(event.keyCode);
       var node_name = event.srcElement.nodeName.toLowerCase();
-      if (node_name === 'input' || node_name === 'textarea')
+      var keys = Object.keys(KEY_BIND);
+      if (node_name === 'input' || node_name === 'textarea' || keys.indexOf(press_key) < 0)
         return;
       event.preventDefault();
-      switch (String.fromCharCode(event.keyCode)) {
-        case 'j':
-          this.ap.next();
-          break;
-        case 'k':
-          this.ap.prev();
-          break;
-        case 'o':
-          this.ap.open();
-          break;
-        case 'f':
-          this.form.text_field.focus();
-          break;
-      }
+      this.ap[KEY_BIND[press_key]]();
     };
 
     $.onpopstate = function(event) {
@@ -64,10 +60,10 @@
     };
   })(SiteScript.prototype);
 
-  function Form(ap) {
+  function Form(ss) {
     this.form = doc.getElementsByTagName('form')[0];
     this.text_field = doc.getElementById('tumblr_username');
-    this.ap = ap;
+    this.ap = ss.ap;
     this.init();
   }
 
@@ -106,8 +102,9 @@
   })(Form.prototype);
 
 
-  function AppendPage(uri) {
-    this.uri = uri;
+  function AppendPage(ss) {
+    this.ss = ss;
+    this.uri = URI;
     this.init();
   }
 
@@ -289,6 +286,11 @@
     $.open = function() {
       var uri = this.current_section().getElementsByClassName('uri')[0].textContent;
       return win.open(uri, '_blank');
+    };
+
+    $.focus = function() {
+      this.ss.form.text_field.focus();
+      return;
     };
   })(AppendPage.prototype);
 
