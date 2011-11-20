@@ -24,15 +24,20 @@
       var node_name = event.srcElement.nodeName.toLowerCase();
       if (node_name === 'input' || node_name === 'textarea')
         return;
-      switch (event.keyCode) {
-        case 106: // j
+      event.preventDefault();
+      switch (String.fromCharCode(event.keyCode)) {
+        case 'j':
           this.ap.next();
           break;
-        case 107: // k
+        case 'k':
           this.ap.prev();
           break;
-        case 111: // o
+        case 'o':
           this.ap.open();
+          break;
+        case 'f':
+          this.form.text_field.focus();
+          break;
       }
     };
 
@@ -92,7 +97,7 @@
       if (this.value === default_value) {
         this.value = '';
         this.removeAttribute('class');
-      } else if (this.value === '') {	  
+      } else if (this.value === '') {
         this.value = default_value;
         this.setAttribute('class', 'initial_value');
       }
