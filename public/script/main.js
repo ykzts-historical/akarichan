@@ -21,6 +21,9 @@
     };
 
     $.onkeypress = function(event) {
+      var node_name = event.srcElement.nodeName.toLowerCase();
+      if (node_name === 'input' || node_name === 'textarea')
+        return;
       switch (event.keyCode) {
         case 106: // j
           this.ap.next();
