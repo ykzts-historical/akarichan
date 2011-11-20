@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var PhotosViewer = require('../lib/PhotosViewer');
+var views = require('./index');
 var settings = require('../settings');
 
 var pv = new PhotosViewer();
@@ -12,8 +13,7 @@ module.exports = function(req, res) {
 
   pv.get(username, page, function(sections) {
     if (!sections.length) {	
-      res.render('404', {status: 404});
-      return;
+      views.http404(req, res);
     }
     res.render('user', {
       username: username,

@@ -7,6 +7,10 @@ exports.index = function(req, res) {
   res.render('index');
 };
 
+exports.http404 = function(req, res) {
+  res.render('404', {status: 404});
+};
+
 fs.readdirSync(__dirname).forEach(function(file) {
   if (file === path.basename(__filename))
     return;

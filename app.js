@@ -1,6 +1,7 @@
 
 var path = require('path');
 var express = require('express');
+var helpers = require('./helpers');
 var routes = require('./routes');
 var settings = require('./settings');
 var app = module.exports = express.createServer();
@@ -11,10 +12,12 @@ app.configure(function() {
   app.set('view options', {
     layout: true,
     settings: settings,
+    status: 200,
     username: '',
     page: ''
   });
   app.set('views', settings.TEMPLATE_DIR);
+  app.use(express.logger({format:':method :url'}));
   app.use(express.bodyParser());
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
@@ -38,15 +41,7 @@ app.configure('development', function() {
 });
 
 app.helpers({
-  get_title: function(username, page) {
-    var title = [];
-    if (page)
-      title.push(page);
-    if (username)
-      title.push(username);
-    title.push(settings.TITLE);
-    return title.join(' < ');
-  }
+  get_title: helpers.get_title
 });
 
 routes.forEach(function(route) {

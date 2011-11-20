@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=no, width=device-width" />
     <link rel="stylesheet" type="text/css" href="/style/main.css" />
-    <title><%= get_title(username, page) %></title>
+    <title><%= get_title() %></title>
   </head>
   <body>
-    <h1><%= get_title(username, page) %></h1>
+    <h1><%= get_title() %></h1>
     <fieldset>
       <legend><label for="tumblr_username">Form</label></legend>
       <form action="/post-method" method="POST">

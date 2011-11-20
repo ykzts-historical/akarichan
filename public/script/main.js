@@ -3,6 +3,7 @@
   var URI = location.href;
   var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
+  var range = doc.createRange();
 
   var KEY_BIND = {
     j: 'next',
@@ -39,11 +40,12 @@
     };
 
     $.onpopstate = function(event) {
-      if (this.ap.uri === URI)
+      var state = event.state;
+      if (this.ap.uri === URI || !state)
         return;
       win.scroll(0, 0);
       this.ap.refresh();
-      this.ap.uri = event.state.uri;
+      this.ap.uri = state.uri || URI;
       this.ap.request();
     };
 
@@ -189,7 +191,6 @@
     };
 
     $.refresh = function() {
-      var range = document.createRange();
       range.selectNodeContents(result);
       range.deleteContents();
     };
@@ -234,7 +235,6 @@
         }
         var res = req.responseXML;
         var _ = doc.importNode(res.getElementById('result'), true);
-        var range = doc.createRange();
         range.selectNodeContents(_);
         result.replaceChild(range.extractContents(), this.message);
         this.page_title = res.getElementsByTagName('title')[0].textContent;
