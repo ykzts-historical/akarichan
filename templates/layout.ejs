@@ -4,16 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=no, width=device-width" />
     <link rel="stylesheet" type="text/css" href="/style/main.css" />
-    <title><%= title %></title>
+    <title><%= get_title(username, page) %></title>
   </head>
   <body>
-    <h1><%= title %></h1>
+    <h1><%= get_title(username, page) %></h1>
     <fieldset>
       <legend><label for="tumblr_username">Form</label></legend>
       <form action="/post-method" method="POST">
         <fieldset>
           <legend><label for="tumblr_username">Tumblr username</label></legend>
-          <input type="text" value="" id="tumblr_username" />
+          <input type="text" value="<%= username %>" id="tumblr_username" name="tumblr_username" />
         </fieldset>
         <input type="submit" value="submit" />
       </form>

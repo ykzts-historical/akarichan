@@ -12,11 +12,12 @@ module.exports = function(req, res) {
 
   pv.get(username, page, function(sections) {
     if (!sections.length) {	
-      res.render('404', {title: '404 not found', status: 404});
+      res.render('404', {status: 404});
       return;
     }
     res.render('user', {
-      title: [page, username, settings.TITLE].join(' < '),
+      username: username,
+      page: page,
       sections: sections
     });
   });

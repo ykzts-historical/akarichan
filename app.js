@@ -8,8 +8,14 @@ var app = module.exports = express.createServer();
 app.configure(function() {
   app.set('port', 3000);
   app.set('view engine', 'ejs');
-  app.set('view options', {layout: true});
+  app.set('view options', {
+    layout: true,
+    settings: settings,
+    username: '',
+    page: ''
+  });
   app.set('views', settings.TEMPLATE_DIR);
+  app.use(express.bodyParser());
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
       res.contentType('xhtml');
@@ -29,6 +35,18 @@ app.configure('development', function() {
   }));
   app.use(app.router);
   app.use(express.static(settings.STATIC_DIR));
+});
+
+app.helpers({
+  get_title: function(username, page) {
+    var title = [];
+    if (page)
+      title.push(page);
+    if (username)
+      title.push(username);
+    title.push(settings.TITLE);
+    return title.join(' < ');
+  }
 });
 
 routes.forEach(function(route) {

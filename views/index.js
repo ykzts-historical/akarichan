@@ -4,7 +4,7 @@ var path = require('path');
 var settings = require('../settings');
 
 exports.index = function(req, res) {
-  res.render('index', {title: settings.TITLE});
+  res.render('index');
 };
 
 fs.readdirSync(__dirname).forEach(function(file) {
