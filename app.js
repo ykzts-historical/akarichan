@@ -51,5 +51,5 @@ routes.forEach(function(route) {
   app.post(path, callback);
 });
 
-if (!module.parent)
+if (require.main === module)
   app.listen(app.settings.port);

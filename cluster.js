@@ -1,5 +1,4 @@
 
-process.env.NODE_PATH = '/usr/local/lib/node_modules';
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
 var os = require('os');
