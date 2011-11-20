@@ -5,7 +5,6 @@
 
   function SiteScript() {
     this.ap = new AppendPage(location.href);
-    this.set_elevator();
     this.add_event();
   }
 
@@ -32,6 +31,7 @@
         this.ap.request();
         return false;
       }.bind(this), false);
+      this.set_elevator();
     };
 
     $.onfocus = function() {
