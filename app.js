@@ -11,8 +11,8 @@ app.configure(function() {
   app.set('view options', {layout: true});
   app.set('views', settings.TEMPLATE_DIR);
   app.use(function(req, res, next) {
-    var ext = path.extname(req.url) || '.xhtml';
-    res.contentType(ext);
+    if (!path.extname(req.url))
+      res.contentType('xhtml');
     next();
   });
 });
