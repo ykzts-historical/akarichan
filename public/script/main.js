@@ -45,6 +45,17 @@
       }
     };
 
+    $.onkeypress = function(event) {
+      if (event.keyCode === 32) {
+        event.preventDefault();
+        if (event.shiftKey) {
+          ss.ap.prev();
+        } else {
+          ss.ap.next();
+        }
+      }
+    };
+
     $.onpopstate = function(event) {
       if (this.ap.uri === location.href)
         return;
