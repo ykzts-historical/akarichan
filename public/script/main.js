@@ -6,6 +6,7 @@
   var KEY_BIND = {
     j: 'next',
     k: 'prev',
+    p: 'pinned',
     o: 'open',
     f: 'focus'
   };
@@ -283,17 +284,38 @@
       return this.go(+1);
     };
 
-    $.open = function() {
+    $.pinned = function() {
       var current = this.current_section();
-      var uri = current.querySelector('a.uri').textContent;
-      var dummy = document.createElement('a');
-      var _e = document.createEvent('MouseEvent');
-      _e.initMouseEvent('click', true, true, window,
+      if (current.getAttribute('class') === 'pinned') {
+        current.removeAttribute('class');
+      } else {
+        current.setAttribute('class', 'pinned');
+      }
+      return current;
+    };
+
+    $.open = function() {
+      var uris = [];
+      var current = this.current_section();
+      var pinned_nodes = result.querySelectorAll('section.pinned');
+      if (pinned_nodes.length) for (var i=0, len=pinned_nodes.length; i<len; i++) {
+        var node = pinned_nodes[i];
+        node.removeAttribute('class');
+        uris.push(node.querySelector('a.uri').textContent);
+      } else {
+        uris.push(current.querySelector('a.uri').textContent);
+      }
+      uris.forEach(this.open_for_background);
+    };
+
+    $.open_for_background = function(uri) {
+      var anchor = document.createElement('a');
+      var event = document.createEvent('MouseEvent');
+      event.initMouseEvent('click', true, true, window,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
-      dummy.setAttribute('href', uri);
-      dummy.setAttribute('target', '_blank');
-      dummy.dispatchEvent(_e);
-      return uri;
+      anchor.setAttribute('href', uri);
+      anchor.setAttribute('target', '_blank');
+      anchor.dispatchEvent(event);
     };
 
     $.focus = function() {
