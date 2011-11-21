@@ -286,6 +286,7 @@
       _e.initMouseEvent('click', true, true, window,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
       dummy.setAttribute('href', uri);
+      dummy.setAttribute('target', '_blank');
       dummy.dispatchEvent(_e);
       return uri;
     };
