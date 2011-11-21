@@ -14,19 +14,15 @@
 
   function SiteScript() {
     this.ap = new AppendPage(this);
+    this.form = new Form(this);
     this.add_event();
+    this.set_elevator();
   }
 
   (function($) {
     $.add_event = function()  {
-      doc.addEventListener('DOMContentLoaded', this.loaded.bind(this), false);
       win.addEventListener('keypress', this.onkeypress.bind(this), false);
       win.addEventListener('popstate', this.onpopstate.bind(this), false);
-    };
-
-    $.loaded = function() {
-      this.form = new Form(this);
-      this.set_elevator();
     };
 
     $.onkeypress = function(event) {
@@ -294,5 +290,7 @@
     };
   })(AppendPage.prototype);
 
-  win.ss = new SiteScript();
+  doc.addEventListener('DOMContentLoaded', function() {
+    win.ss = new SiteScript();
+  }, false);
 })(window.document, window);
