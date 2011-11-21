@@ -15,3 +15,12 @@ exports.get_title = function() {
   title.push(settings.TITLE);
   return title.join(' < ');
 };
+
+exports.next_page = function() {
+  var username = this.username;
+  var page = this.page;
+  if (!(username && page))
+    return '';
+  page++;
+  return '/' + username + '?page=' + page;
+};

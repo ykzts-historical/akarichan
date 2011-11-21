@@ -40,9 +40,7 @@ app.configure('development', function() {
   app.use(express.static(settings.STATIC_DIR));
 });
 
-app.helpers({
-  get_title: helpers.get_title
-});
+app.helpers(helpers);
 
 routes.forEach(function(route) {
   var path = route[0];

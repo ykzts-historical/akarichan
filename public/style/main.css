@@ -126,7 +126,7 @@ input.initial_value {
   background-color: white;
 }
 
-#result > p {
+#message {
   width: 95%;
 
   margin: 1em auto;
@@ -140,6 +140,13 @@ input.initial_value {
   font-size: 2em;
 }
 
-#_template {
-  display: none;
+#message a {
+  display: block;
+
+  margin: 0;
+  pading: 0;
+
+  color: black;
+  text-decoration: none;
+  text-align: center;
 }
