@@ -1,7 +1,6 @@
 (function(doc, win) {
   var HOST = location.host;
   var URI = location.href;
-  var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
 
   var KEY_BIND = {
@@ -48,7 +47,7 @@
 
     $.set_elevator = function() {
       var list_node = doc.createElement('ul');
-      body.appendChild(list_node);
+      result.insertAdjacentElement('afterEnd', list_node);
       list_node.setAttribute('id', 'elevator');
       ['prev', 'next'].forEach(function(value) {
         var list_item = doc.createElement('li');
