@@ -37,11 +37,11 @@
 
     $.onpopstate = function(event) {
       var state = event.state;
-      if (this.ap.uri === URI || !state)
+      if (!state || this.ap.uri === state.uri)
         return;
       win.scroll(0, 0);
       this.ap.refresh();
-      this.ap.uri = state.uri || URI;
+      this.ap.uri = URI = state.uri;
       this.ap.request();
     };
 
