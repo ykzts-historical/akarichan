@@ -29,8 +29,9 @@
       var target = event.target;
       var press_key = String.fromCharCode(event.keyCode || event.charCode);
       var node_name = target.nodeName.toLowerCase();
+      var ignore_nodes = ['input', 'textarea'];
       var keys = Object.keys(KEY_BIND);
-      if (node_name === 'input' || node_name === 'textarea' || keys.indexOf(press_key) < 0)
+      if (ignore_nodes.indexOf(node_name) >= 0 || keys.indexOf(press_key) < 0)
         return;
       event.preventDefault();
       this.ap[KEY_BIND[press_key]]();
