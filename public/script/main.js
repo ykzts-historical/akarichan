@@ -284,7 +284,7 @@
       var dummy = document.createElement('a');
       var _e = document.createEvent('MouseEvent');
       _e.initMouseEvent('click', true, true, window,
-        0, 0, 0, 0, 0, false, false, false, true, 0, null);
+        0, 0, 0, 0, 0, false, false, false, false, 1, null);
       dummy.setAttribute('href', uri);
       dummy.dispatchEvent(_e);
       return uri;
