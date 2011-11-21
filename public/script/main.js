@@ -283,7 +283,8 @@
     };
 
     $.open = function() {
-      var uri = this.current_section().getElementsByClassName('uri')[0].textContent;
+      var current = this.current_section();
+      var uri = current.querySelector('a.uri').textContent;
       var dummy = document.createElement('a');
       var _e = document.createEvent('MouseEvent');
       _e.initMouseEvent('click', true, true, window,
