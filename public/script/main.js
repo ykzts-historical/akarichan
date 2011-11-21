@@ -281,7 +281,13 @@
 
     $.open = function() {
       var uri = this.current_section().getElementsByClassName('uri')[0].textContent;
-      return win.open(uri, '_blank');
+      var dummy = document.createElement('a');
+      var _e = document.createEvent('MouseEvent');
+      _e.initMouseEvent('click', true, true, window,
+        0, 0, 0, 0, 0, false, false, false, true, 0, null);
+      dummy.setAttribute('href', uri);
+      dummy.dispatchEvent(_e);
+      return uri;
     };
 
     $.focus = function() {
