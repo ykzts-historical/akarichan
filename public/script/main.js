@@ -3,7 +3,6 @@
   var URI = location.href;
   var body = doc.getElementsByTagName('body')[0];
   var result = doc.getElementById('result');
-  var range = doc.createRange();
 
   var KEY_BIND = {
     j: 'next',
@@ -189,6 +188,7 @@
     };
 
     $.refresh = function() {
+      var range = doc.createRange();
       range.selectNodeContents(result);
       range.deleteContents();
     };
@@ -235,8 +235,8 @@
           return;
         }
         var res = req.responseXML;
-        var _ = doc.importNode(res.getElementById('result'), true);
-        range.selectNodeContents(_);
+        var range = res.createRange();
+        range.selectNodeContents(res.getElementById('result'));
         result.replaceChild(range.extractContents(), this.message);
         this.page_title = res.getElementsByTagName('title')[0].textContent;
         this.add_event();
