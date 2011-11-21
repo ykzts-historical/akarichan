@@ -213,7 +213,10 @@
     };
 
     $.load_next = function() {
-      this.page = this.page + 1;
+      var anchor = doc.querySelector('#message a:only-child');
+      if (!anchor)
+        return;
+      this.uri = anchor.getAttribute('href');
       this.request();
     };
 
