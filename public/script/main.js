@@ -26,8 +26,9 @@
     };
 
     $.onkeypress = function(event) {
-      var press_key = String.fromCharCode(event.keyCode);
-      var node_name = event.srcElement.nodeName.toLowerCase();
+      var target = event.target;
+      var press_key = String.fromCharCode(event.keyCode || event.charCode);
+      var node_name = target.nodeName.toLowerCase();
       var keys = Object.keys(KEY_BIND);
       if (node_name === 'input' || node_name === 'textarea' || keys.indexOf(press_key) < 0)
         return;
@@ -75,7 +76,7 @@
       this.form.addEventListener('submit', this.onsubmit.bind(this), false);
     };
 
-    $.onsubmit = function() {
+    $.onsubmit = function(event) {
       event.preventDefault();
       if (!this.text_field.value)
         return false;
