@@ -7,9 +7,11 @@
 }
 
 html {
-  -webkit-background-size: 10px 10px;
+  background-size: 10px 10px;
   background-color: silver;
-  background-image: -webkit-gradient(linear, 0 0, 100% 0, color-stop(.5, rgba(255, 255, 255, .2)), color-stop(.5, transparent), to(transparent));
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
+  background-image: -moz-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
+  background-image: -o-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
 }
 
 body {
