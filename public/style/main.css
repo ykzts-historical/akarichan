@@ -60,14 +60,9 @@ body > fieldset {
 
   width: 100%;
 
-  background-color: silver;
-  opacity: .6;
+  background-color: rgba(192, 192, 192, .6);
 
   text-align: center;
-}
-
-body > fieldset:hover {
-  opacity: 1;
 }
 
 body > fieldset fieldset {
@@ -88,7 +83,14 @@ body > fieldset input[type="text"] {
   border: thin solid black;
   border-radius: .15em;
 
+  background-color: rgba(255, 255, 255, .6);
+
   font-size: 2em;
+}
+
+body > fieldset:hover input[type="text"],
+body > fieldset:not(:hover) input[type="text"]:focus {
+  background-color: rgb(255, 255, 255);
 }
 
 input.initial_value {
