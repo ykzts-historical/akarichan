@@ -239,7 +239,7 @@
     };
 
     $.load_next = function() {
-      var anchor = doc.querySelector('#message a:only-child');
+      var anchor = this.ss.message.querySelector('a:only-child');
       if (!anchor)
         return;
       this.uri = anchor.getAttribute('href');
