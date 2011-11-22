@@ -12,9 +12,9 @@
   };
 
   function SiteScript() {
-    this.form = new Form(this);
     this.sections = new Sections(this);
     this.ap = new AppendPage(this);
+    this.form = new Form(this);
     this.ka = new KeypressAction(this);
     this.add_event();
     this.set_elevator();
@@ -103,6 +103,7 @@
     this.form = doc.getElementsByTagName('form')[0];
     this.text_field = doc.getElementById('tumblr_username');
     this.ap = ss.ap;
+    this.sections = ss.sections;
     this.init();
   }
 
