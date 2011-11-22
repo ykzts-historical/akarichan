@@ -118,7 +118,7 @@
 
     $.init = function() {
       if (!this.text_field.value) {
-        this.value = default_value;
+        this.text_field.value = default_value;
         this.text_field.setAttribute('class', 'initial_value');
       }
       this.text_field.addEventListener('focus', this.onfocus, false);
