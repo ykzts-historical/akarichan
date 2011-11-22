@@ -43,10 +43,10 @@ app.configure('development', function() {
 app.helpers(helpers);
 
 routes.forEach(function(route) {
-  var path = route[0];
+  var _path = route[0];
   var callback = route[1];
-  app.get(path, callback);
-  app.post(path, callback);
+  app.get(_path, callback);
+  app.post(_path, callback);
 });
 
 if (require.main === module)
