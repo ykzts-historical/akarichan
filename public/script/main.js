@@ -14,6 +14,7 @@
   function SiteScript() {
     this.ap = new AppendPage(this);
     this.form = new Form(this);
+    this.ka = new KeypressAction(this);
     this.add_event();
     this.set_elevator();
   }
@@ -33,7 +34,7 @@
       if (ignore_nodes.indexOf(node_name) >= 0 || keys.indexOf(press_key) < 0)
         return;
       event.preventDefault();
-      this.ap[KEY_BIND[press_key]]();
+      this.ka[KEY_BIND[press_key]]();
     };
 
     $.onpopstate = function(event) {
@@ -100,6 +101,42 @@
     };
   })(Form.prototype);
 
+  function KeypressAction(ss) {
+    this.ap = ss.ap;
+    this.form = ss.form;
+  }
+
+  (function($) {
+    $.next = function() {
+      this.ap.next();
+    };
+
+    $.prev = function() {
+      this.ap.prev();
+    };
+
+    $.pinned = function() {
+      var current = this.ap.current_section();
+      this.ap.set_pin(current);
+    };
+
+    $.open = function() {
+      var current = this.ap.current_section();
+      var pinned = result.querySelectorAll('.pinned');
+      var len = pinned.length;
+      if (len) for (var i=0; i<len; i++) {
+        var section = pinned[i];
+        this.ap.open(section);
+        this.ap.set_pin(section);
+      } else {
+        this.ap.open(current);
+      }
+    };
+
+    $.focus = function() {
+      this.form.text_field.focus();
+    };
+  })(KeypressAction.prototype);
 
   function AppendPage(ss) {
     this.ss = ss;
@@ -252,6 +289,22 @@
       return 'http://' + HOST + path;
     };
 
+    $.open = function(section) {
+      var anchor = section.querySelector('a.uri');
+      var event = doc.createEvent('MouseEvent');
+      event.initMouseEvent('click', true, true, window,
+        0, 0, 0, 0, 0, false, false, false, false, 1, null);
+      anchor.dispatchEvent(event);
+    };
+
+    $.set_pin = function(section) {
+      if (section.getAttribute('class')) {
+        section.removeAttribute('class');
+      } else {
+        section.setAttribute('class', 'pinned');
+      }
+    };
+
     $.current_section = function() {
       if (!this.sections.length)
         return null;
@@ -282,45 +335,6 @@
 
     $.next = function() {
       return this.go(+1);
-    };
-
-    $.pinned = function() {
-      var current = this.current_section();
-      if (current.getAttribute('class') === 'pinned') {
-        current.removeAttribute('class');
-      } else {
-        current.setAttribute('class', 'pinned');
-      }
-      return current;
-    };
-
-    $.open = function() {
-      var uris = [];
-      var current = this.current_section();
-      var pinned_nodes = result.querySelectorAll('section.pinned');
-      if (pinned_nodes.length) for (var i=0, len=pinned_nodes.length; i<len; i++) {
-        var node = pinned_nodes[i];
-        node.removeAttribute('class');
-        uris.push(node.querySelector('a.uri').textContent);
-      } else {
-        uris.push(current.querySelector('a.uri').textContent);
-      }
-      uris.forEach(this.open_for_background);
-    };
-
-    $.open_for_background = function(uri) {
-      var anchor = document.createElement('a');
-      var event = document.createEvent('MouseEvent');
-      event.initMouseEvent('click', true, true, window,
-        0, 0, 0, 0, 0, false, false, false, false, 1, null);
-      anchor.setAttribute('href', uri);
-      anchor.setAttribute('target', '_blank');
-      anchor.dispatchEvent(event);
-    };
-
-    $.focus = function() {
-      this.ss.form.text_field.focus();
-      return;
     };
   })(AppendPage.prototype);
 
