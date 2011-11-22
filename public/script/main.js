@@ -21,7 +21,7 @@
   }
 
   (function($) {
-    var _page_title_node = doc.getElementsByTagName('title')[0];
+    var _page_title_node = doc.querySelector('head title');
 
     Object.defineProperties($, {
       page_title: {
