@@ -50,7 +50,7 @@ body > h1 {
   display: none;
 }
 
-body > h1 + fieldset {
+body > fieldset {
   display: block;
   z-index: 11000;
 
@@ -65,16 +65,16 @@ body > h1 + fieldset {
   text-align: center;
 }
 
-body > h1 + fieldset fieldset {
+body > fieldset fieldset {
   border: none;
 }
 
-body > h1 + fieldset legend,
-body > h1 + fieldset input[type="submit"] {
+body > fieldset legend,
+body > fieldset input[type="submit"] {
   display: none;
 }
 
-body > h1 + fieldset input[type="text"] {
+body > fieldset input[type="text"] {
   width: 95%;
 
   margin: .15em;
@@ -90,18 +90,14 @@ input.initial_value {
   color: gray;
 }
 
-#result {
-  width: 100%;
-}
-
-#result > section {
+body > section {
   width: 100%;
 
   margin: 0;
   padding-top: 4em;
 }
 
-#result > section.pinned {
+body > section.pinned {
   background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, .5), rgba(255, 255, 255, .5));
   background-image: -moz-linear-gradient(top, rgba(255, 255, 255, .5), rgba(255, 255, 255, .5));
   background-image: -o-linear-gradient(top, rgba(255, 255, 255, .5), rgba(255, 255, 255, .5));
@@ -109,11 +105,11 @@ input.initial_value {
   background-position: 0 4em;
 }
 
-#result > section h1 {
+body > section h1 {
   display: none;
 }
 
-#result img {
+body > section img {
   display: block;
 
   max-width: 90%;

@@ -1,4 +1,17 @@
 
+// for Firefox
+if (!HTMLElement.prototype.insertAdjacentElement) {
+  HTMLElement.prototype.insertAdjacentElement = function(where, elem) {
+    var doc = this.ownerDocument;
+    var div = doc.createElement('div');
+    var text = '';
+    div.appendChild(elem);
+    text += div.innerHTML;
+    this.insertAdjacentHTML(where, text);
+  };
+}
+
+// for Safari
 // @cite=https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
 if (!Function.prototype.bind) {
   Function.prototype.bind = function (oThis) {
