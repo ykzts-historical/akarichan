@@ -12,14 +12,51 @@
   };
 
   function SiteScript() {
-    this.ap = new AppendPage(this);
     this.form = new Form(this);
+    this.sections = new Sections(this);
+    this.ap = new AppendPage(this);
     this.ka = new KeypressAction(this);
     this.add_event();
     this.set_elevator();
   }
 
   (function($) {
+    var _page_title_node = doc.getElementsByTagName('title')[0];
+
+    Object.defineProperties($, {
+      page_title: {
+        get: function() {
+          return _page_title_node.textContent;
+        },
+        set: function(title) {
+          var text_node = doc.createTextNode(title);
+          _page_title_node.replaceChild(text_node, _page_title_node.firstChild);
+          return title;
+        }
+      },
+
+      message: {
+        get: function() {
+          return doc.getElementById('message');
+        },
+        set: function(message) {
+          var _message_node = this.message;
+          var text_node = doc.createTextNode(message);
+          if (!_message_node) {
+            _message_node = doc.createElement('p');
+            _message_node.setAttribute('id', 'message');
+            result.appendChild(_message_node);
+          }
+          if (_message_node.firstChild) {
+            _message_node.replaceChild(text_node, _message_node.firstChild);
+          } else {
+            _message_node.appendChild(text_node);
+          }
+          return _message_node;
+        }
+      }
+    });
+
     $.add_event = function()  {
       win.addEventListener('keypress', this.onkeypress.bind(this), false);
       win.addEventListener('popstate', this.onpopstate.bind(this), false);
@@ -42,7 +79,7 @@
       if (!state || this.ap.uri === state.uri)
         return;
       win.scroll(0, 0);
-      this.ap.refresh();
+      this.sections.refresh();
       this.ap.uri = URI = state.uri;
       this.ap.request();
     };
@@ -55,7 +92,9 @@
         var list_item = doc.createElement('li');
         list_node.appendChild(list_item);
         list_item.setAttribute('class', value);
-        list_item.addEventListener('click', this.ap[value].bind(this.ap));
+        list_item.addEventListener('click', function() {
+          this.sections[value]();
+        }.bind(this), false);
       }.bind(this));
     };
   })(SiteScript.prototype);
@@ -103,33 +142,34 @@
 
   function KeypressAction(ss) {
     this.ap = ss.ap;
+    this.sections = ss.sections;
     this.form = ss.form;
   }
 
   (function($) {
     $.next = function() {
-      this.ap.next();
+      this.sections.next();
     };
 
     $.prev = function() {
-      this.ap.prev();
+      this.sections.prev();
     };
 
     $.pinned = function() {
-      var current = this.ap.current_section();
-      this.ap.set_pin(current);
+      var current = this.sections.current_section();
+      this.sections.set_pin(current);
     };
 
     $.open = function() {
-      var current = this.ap.current_section();
+      var current = this.sections.current_section();
       var pinned = result.querySelectorAll('.pinned');
       var len = pinned.length;
       if (len) for (var i=0; i<len; i++) {
         var section = pinned[i];
-        this.ap.open(section);
-        this.ap.set_pin(section);
+        this.sections.open(section);
+        this.sections.set_pin(section);
       } else {
-        this.ap.open(current);
+        this.sections.open(current);
       }
     };
 
@@ -140,47 +180,15 @@
 
   function AppendPage(ss) {
     this.ss = ss;
+    this.sections = ss.sections;
     this.uri = URI;
     this.init();
   }
 
   (function($) {
     var _expr = /(?:http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?)?/;
-    var _page_title_node = doc.getElementsByTagName('title')[0];
 
     Object.defineProperties($, {
-      page_title: {
-        get: function() {
-          return _page_title_node.textContent;
-        },
-        set: function(title) {
-          var text_node = doc.createTextNode(title);
-          _page_title_node.replaceChild(text_node, _page_title_node.firstChild);
-          return title;
-        }
-      },
-
-      message: {
-        get: function() {
-          return doc.getElementById('message');
-        },
-        set: function(message) {
-          var _message_node = this.message;
-          var text_node = doc.createTextNode(message);
-          if (!_message_node) {
-            _message_node = doc.createElement('p');
-            _message_node.setAttribute('id', 'message');
-            result.appendChild(_message_node);
-          }
-          if (_message_node.firstChild) {
-            _message_node.replaceChild(text_node, _message_node.firstChild);
-          } else {
-            _message_node.appendChild(text_node);
-          }
-          return _message_node;
-        }
-      },
-
       username: {
         get: function() {
           return _expr.exec(this.uri)[1];
@@ -199,35 +207,12 @@
           this.uri = this.get_api_uri(this.username, page);
           return page;
         }
-      },
-
-      sections: {
-        get: function() {
-          var sections = result.getElementsByTagName('section');
-          return sections;
-        }
-      },
-
-      section_positions: {
-        get: function() {
-          var ret = [];
-          var sections = this.sections;
-          for (var i=0, len=sections.length; i<len; i++)
-            ret.push(sections[i].offsetTop);
-          return ret;
-        }
       }
     });
 
     $.init = function() {
       if (this.username)
         this.add_event();
-    };
-
-    $.refresh = function() {
-      var range = doc.createRange();
-      range.selectNodeContents(result);
-      range.deleteContents();
     };
 
     $.add_event = function() {
@@ -240,12 +225,13 @@
     };
 
     $.window_scroll = function(remove_event) {
-      var len = this.sections.length;
+      var sections = this.sections.nodes;
+      var len = sections.length;
       if (len === 0) {
         remove_event();
         return;
       }
-      if (win.scrollY < this.sections[len-2].offsetTop)
+      if (win.scrollY < sections[len-2].offsetTop)
         return;
       remove_event();
       this.load_next();
@@ -261,21 +247,21 @@
 
     $.request = function() {
       if (this.uri !== URI && 'pushState' in win.history)
-        win.history.pushState({uri: this.uri}, this.page_title, this.uri);
-      this.message = 'loading...';
+        win.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
+      this.ss.message = 'loading...';
       var req = new XMLHttpRequest();
       req.onreadystatechange = function() {
         if (req.readyState !== 4)
           return;
         if (req.status !== 200) {
-          this.page_title = this.message = '404 not found.';
+          this.ss.page_title = this.ss.message = '404 not found.';
           return;
         }
         var res = req.responseXML;
         var range = res.createRange();
         range.selectNodeContents(res.getElementById('result'));
-        result.replaceChild(range.extractContents(), this.message);
-        this.page_title = res.getElementsByTagName('title')[0].textContent;
+        result.replaceChild(range.extractContents(), this.ss.message);
+        this.ss.page_title = res.getElementsByTagName('title')[0].textContent;
         this.add_event();
       }.bind(this);
       req.open('GET', this.uri);
@@ -287,6 +273,37 @@
       if (page > 1)
         path += '?page=' + page;
       return 'http://' + HOST + path;
+    };
+  })(AppendPage.prototype);
+
+  function Sections(ss) {
+    this.ss = ss;
+  }
+
+  (function($) {
+    Object.defineProperties($, {
+      nodes: {
+        get: function() {
+          var sections = result.getElementsByTagName('section');
+          return sections;
+        }
+      },
+
+      positions: {
+        get: function() {	    
+          var ret = [];
+          var sections = this.nodes;
+          for (var i=0, len=sections.length; i<len; i++)
+            ret.push(sections[i].offsetTop);
+          return ret;
+        }
+      }
+    });
+
+    $.refresh = function() {
+      var range = doc.createRange();
+      range.selectNodeContents(result);
+      range.deleteContents();
     };
 
     $.open = function(section) {
@@ -306,27 +323,27 @@
     };
 
     $.current_section = function() {
-      if (!this.sections.length)
+      if (!this.nodes.length)
         return null;
       var pos = win.scrollY;
-      for (var i=this.sections.length; i>=0; i--) {
-        var sec_pos = this.section_positions[i];
+      for (var i=this.nodes.length; i>=0; i--) {
+        var sec_pos = this.positions[i];
         if (sec_pos-pos <= 0)
           break;
       }
-      return this.sections[this.section_positions.indexOf(sec_pos)];
+      return this.nodes[this.positions.indexOf(sec_pos)];
     };
 
     $.go = function(num) {
       var current = this.current_section();
       if (!current)
         return -1;
-      var i = this.section_positions.indexOf(current.offsetTop);
+      var i = this.positions.indexOf(current.offsetTop);
       i = i + num;
-      if (i < 0 || i > this.sections.length - 1)
+      if (i < 0 || i > this.nodes.length - 1)
         return -1;
-      win.scroll(0, this.section_positions[i]);
-      return this.sections[i];
+      win.scroll(0, this.positions[i]);
+      return this.nodes[i];
     };
 
     $.prev = function() {
@@ -336,7 +353,7 @@
     $.next = function() {
       return this.go(+1);
     };
-  })(AppendPage.prototype);
+  })(Sections.prototype);
 
   doc.addEventListener('DOMContentLoaded', function() {
     win.ss = new SiteScript();
