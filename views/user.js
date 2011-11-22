@@ -4,7 +4,7 @@ var PhotosViewer = require('../lib/PhotosViewer');
 var views = require('./index');
 var settings = require('../settings');
 
-var pv = new PhotosViewer();
+var pv = new PhotosViewer(settings.TUMBLR.API_KEY);
 
 module.exports = function(req, res) {
   var username = req.params.username;
