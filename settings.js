@@ -1,6 +1,11 @@
 
-var fs = require('fs');
-var tumblr_api_keys = fs.readFileSync(__dirname + '/TUMBLR_API_KEYS').toString().split('\n');
+var _ = (function() {
+  try {
+    return require('./TUMBLR_API_KEYS');
+  } catch(e) {
+    return {};
+  }
+})();
 
 module.exports = {
   TITLE: 'tumblr photos viewer',
@@ -8,7 +13,7 @@ module.exports = {
   STATIC_DIR: __dirname + '/public',
   TUMBLR: {
     API_HOST: 'api.tumblr.com',
-    API_KEY: tumblr_api_keys[0],
-    API_SECRET_KEY: tumblr_api_keys[1]
+    API_KEY: _.TUMBLR_API_KEY,
+    API_SECRET_KEY: _.TUMBLR_API_SECRET_KEY
   }
 };
