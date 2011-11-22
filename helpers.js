@@ -16,6 +16,15 @@ exports.get_title = function() {
   return title.join(' < ');
 };
 
+exports.prev_page = function() {
+  var username = this.username;
+  var page = this.page;
+  if (!(username && page) || page<=1)
+    return '';
+  page--;
+  return '/' + username + '?page=' + page;
+};
+
 exports.next_page = function() {
   var username = this.username;
   var page = this.page;

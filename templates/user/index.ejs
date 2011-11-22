@@ -1,6 +1,6 @@
     <section id="result">
 <%- partial('section', sections) %>
 <% if (next_page()) { %>
-      <p id="message"><a href="<%= next_page() %>">Next</a></p>
+      <p id="message"><a rel="next" href="<%= next_page() %>">Next</a></p>
 <% } %>
     </section>

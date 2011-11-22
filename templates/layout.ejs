@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=no, width=device-width" />
+<% if (prev_page()) { %>
+    <link rel="prev" href="<%= prev_page() %>" />
+<% } %>
+<% if (next_page()) { %>
+    <link rel="next" href="<%= next_page() %>" />
+<% } %>
     <link rel="stylesheet" type="text/css" href="/style/main.css" />
     <title><%= get_title() %></title>
   </head>
