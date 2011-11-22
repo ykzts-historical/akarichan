@@ -121,7 +121,7 @@
       if (!this.text_field.value)
         return false;
       this.text_field.blur();
-      this.ap.refresh();
+      this.sections.refresh();
       this.ap.username = this.text_field.value;
       this.ap.page = 1;
       this.ap.request();
