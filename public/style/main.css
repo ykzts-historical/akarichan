@@ -131,6 +131,10 @@ body > section img {
   background-color: white;
 }
 
+body > section figcaption {
+  display: none;
+}
+
 #message {
   width: 95%;
 

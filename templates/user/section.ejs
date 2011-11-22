@@ -1,4 +1,12 @@
-    <section>
-      <h1><a href="<%= section.uri %>" class="uri"><%= section.uri %></a></h1>
-      <p class="photo"><img src="<%= section.photo_uri %>" alt="  " /></p>
+    <section id="page-<%= page %>-section-<%= section.num %>">
+      <h1><a href="#page-<%= page %>-section-<%= section.num %>">P.<%= page %> S.<%= section.num %></a></h1>
+      <figure>
+        <img src="<%= section.photo_uri %>" />
+        <figcaption>
+          <dl>
+            <dt>POST URI</dt>
+            <dd><a href="<%= section.uri %>" class="uri"><%= section.uri %></a></dd>
+          </dl>
+        </figcaption>
+      </figure>
     </section>
