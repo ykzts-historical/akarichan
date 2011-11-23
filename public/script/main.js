@@ -294,18 +294,22 @@
           return;
         }
         var res = req.responseXML;
-        var df = res.createDocumentFragment();
-        var sections = Array.prototype.slice.apply(
-          res.querySelectorAll('body > section, #message'));
-        sections.forEach(function(section) {
-          df.appendChild(section);
-        });
-        this.ss.message = doc.importNode(df, true);
-        this.ss.page_title = res.querySelector('head title').textContent;
+        this.append(res);
         this.add_event();
       }.bind(this);
       req.open('GET', this.uri);
       req.send(null);
+    };
+
+    $.append = function(res) {
+      var df = res.createDocumentFragment();
+      var sections = Array.prototype.slice.apply(
+        res.querySelectorAll('body > section, #message'));
+      sections.forEach(function(section) {
+        df.appendChild(section);
+      });
+      this.ss.message = doc.importNode(df, true);
+      this.ss.page_title = res.querySelector('head title').textContent;
     };
 
     $.get_api_uri = function(username, page) {
