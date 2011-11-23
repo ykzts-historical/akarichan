@@ -303,17 +303,15 @@
       nodes: {
         get: function() {
           var sections = doc.querySelectorAll('body > section');
-          return sections;
+          return Array.prototype.slice.apply(sections);
         }
       },
 
       positions: {
-        get: function() {	    
-          var ret = [];
-          var sections = this.nodes;
-          for (var i=0, len=sections.length; i<len; i++)
-            ret.push(sections[i].offsetTop);
-          return ret;
+        get: function() {
+          return this.nodes.map(function(section) {
+            return section.offsetTop;
+          });
         }
       }
     });
@@ -346,27 +344,33 @@
     };
 
     $.current_section = function() {
-      if (!this.nodes.length)
+      var sections = this.nodes;
+      var positions = this.positions;
+      var len = sections.length;
+      if (!len)
         return null;
       var pos = win.scrollY;
-      for (var i=this.nodes.length; i>=0; i--) {
-        var sec_pos = this.positions[i];
+      for (var i=len; i>=0; i--) {
+        var sec_pos = positions[i];
         if (sec_pos-pos <= 0)
           break;
       }
-      return this.nodes[this.positions.indexOf(sec_pos)];
+      return sections[positions.indexOf(sec_pos)];
     };
 
     $.go = function(num) {
+      var sections = this.nodes;
+      var positions = this.positions;
+      var len = sections.length;
       var current = this.current_section();
       if (!current)
         return -1;
-      var i = this.positions.indexOf(current.offsetTop);
+      var i = positions.indexOf(current.offsetTop);
       i = i + num;
-      if (i < 0 || i > this.nodes.length - 1)
+      if (i < 0 || i > len - 1)
         return -1;
-      win.scroll(0, this.positions[i]);
-      return this.nodes[i];
+      win.scroll(0, positions[i]);
+      return sections[i];
     };
 
     $.prev = function() {
