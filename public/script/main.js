@@ -41,19 +41,25 @@
         },
         set: function(message) {
           var _message_node = this.message;
+          if (!message) {
+            if (_message_node)
+              _message_node.parentNode.removeChild(_message_node);
+            return null;
+          }
           if (!_message_node)
             _message_node = this.create_message_node();
-          if (!message) {
-            _message_node.parentNode.removeChild(_message_node);
-          } else if (message.nodeType) {
-            _message_node.parentNode.replaceChild(message, _message_node);
-          } else if (typeof message === 'string') {
-            var text_node = document.createTextNode(message);
-            if (_message_node.firstChild) {
-              _message_node.replaceChild(text_node, _message_node.firstChild);
-            } else {
-              _message_node.appendChild(text_node);
-            }
+          switch (message.constructor) {
+            case HTMLElement:
+              _message_node.parentNode.replaceChild(message, _message_node);
+              break;
+            case String:
+              var text_node = document.createTextNode(message);
+              if (_message_node.firstChild) {
+                _message_node.replaceChild(text_node, _message_node.firstChild);
+              } else {
+                _message_node.appendChild(text_node);
+              }
+            break;
           }
           return _message_node;
         }
