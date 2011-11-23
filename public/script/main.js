@@ -87,6 +87,8 @@
       this.sections.refresh();
       this.ap.uri = URI = state.uri;
       this.ap.request();
+      if (this.form.text_field.value !== this.ap.username)
+        this.form.text_field.value = this.ap.username;
     };
 
     $.create_message_node = function() {
@@ -103,7 +105,6 @@
 
     $.set_elevator = function() {
       var ka = this.ka;
-      var sections = this.sections;
       var list_node = doc.createElement('ul');
       var point = doc.querySelector('script:first-of-type');
       list_node.setAttribute('id', 'elevator');
@@ -122,8 +123,8 @@
   function Form(ss) {
     this.form = doc.getElementsByTagName('form')[0];
     this.text_field = doc.getElementById('tumblr_username');
-    this.ap = ss.ap;
     this.sections = ss.sections;
+    this.ap = ss.ap;
     this.init();
   }
 
@@ -199,8 +200,7 @@
       var current = this.sections.current_section();
       var pinned = doc.querySelectorAll('.pinned');
       var sections = Array.prototype.slice.apply(pinned);
-      var len = sections.length;
-      if (!len) {
+      if (!sections.length) {
         this.sections.open(current);
         return;
       }
