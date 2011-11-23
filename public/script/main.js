@@ -3,6 +3,7 @@
   var URI = location.href;
 
   var KEY_BIND = {
+    r: 'reload',
     j: 'next',
     k: 'prev',
     p: 'pinned',
@@ -161,6 +162,11 @@
   }
 
   (function($) {
+    $.reload = function() {
+      this.sections.refresh();
+      this.ap.request();
+    };
+
     $.next = function() {
       this.sections.next();
     };
@@ -325,6 +331,7 @@
       range.setStartBefore(sections[0]);
       range.setEndAfter(sections[len-1]);
       range.deleteContents();
+      this.ss.message.parentNode.removeChild(this.ss.message);
     };
 
     $.open = function(section) {
