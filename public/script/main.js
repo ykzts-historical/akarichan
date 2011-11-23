@@ -88,7 +88,7 @@
     };
 
     $.create_message_node = function() {
-      var _message_node = doc.create('p');
+      var _message_node = doc.createElement('p');
       var selector = [
         'section:last-of-type',
         'body > fieldset'
