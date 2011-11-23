@@ -196,14 +196,15 @@
     $.open = function() {
       var current = this.sections.current_section();
       var pinned = doc.querySelectorAll('.pinned');
-      var len = pinned.length;
-      if (len) for (var i=0; i<len; i++) {
-        var section = pinned[i];
+      var sections = Array.prototype.slice.apply(pinned);
+      var len = sections.length;
+      if (!len)
+        this.sections.open(current);
+        return;
+      sections.forEach(function(section) {
         this.sections.open(section);
         this.sections.set_pin(section);
-      } else {
-        this.sections.open(current);
-      }
+      }, this);
     };
 
     $.focus = function() {
@@ -294,9 +295,11 @@
         }
         var res = req.responseXML;
         var df = res.createDocumentFragment();
-        var sections = res.querySelectorAll('body > section, #message');
-        for (var i=0, len=sections.length; i<len; i++)
-          df.appendChild(sections[i]);
+        var sections = Array.prototype.slice.apply(
+          res.querySelectorAll('body > section, #message'));
+        sections.forEach(function(section) {
+          df.appendChild(section);
+        });
         this.ss.message = doc.importNode(df, true);
         this.ss.page_title = res.querySelector('head title').textContent;
         this.add_event();
