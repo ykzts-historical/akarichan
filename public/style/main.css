@@ -95,7 +95,8 @@ body > fieldset:not(:hover) input[type="text"]:focus {
   color: black;
 }
 
-input.initial_value {
+body > fieldset input.initial_value,
+body > fieldset:hover input.initial_value {
   color: gray;
 }
 
