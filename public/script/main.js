@@ -1,7 +1,6 @@
 (function(doc, win) {
   var HOST = location.host;
   var URI = location.href;
-
   var KEY_BIND = {
     r: 'reload',
     j: 'next',
@@ -48,18 +47,15 @@
           }
           if (!_message_node)
             _message_node = this.create_message_node();
-          switch (message.constructor) {
-            case HTMLElement:
+          if (message.nodeType) {
               _message_node.parentNode.replaceChild(message, _message_node);
-              break;
-            case String:
-              var text_node = document.createTextNode(message);
-              if (_message_node.firstChild) {
-                _message_node.replaceChild(text_node, _message_node.firstChild);
-              } else {
-                _message_node.appendChild(text_node);
-              }
-            break;
+          } else if (typeof message === 'string') {
+            var text_node = document.createTextNode(message);
+            if (_message_node.firstChild) {
+              _message_node.replaceChild(text_node, _message_node.firstChild);
+            } else {
+              _message_node.appendChild(text_node);
+            }
           }
           return _message_node;
         }
