@@ -198,9 +198,10 @@
       var pinned = doc.querySelectorAll('.pinned');
       var sections = Array.prototype.slice.apply(pinned);
       var len = sections.length;
-      if (!len)
+      if (!len) {
         this.sections.open(current);
         return;
+      }
       sections.forEach(function(section) {
         this.sections.open(section);
         this.sections.set_pin(section);
