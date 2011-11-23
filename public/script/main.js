@@ -43,7 +43,7 @@
           var node;
           var _message_node = this.message;
           if (!message) {
-            _message_node.prentNode.removeChild(_message_node);
+            _message_node.parentNode.removeChild(_message_node);
             return null;
           } else if (typeof message === 'string') {
             node = doc.createTextNode(message);
