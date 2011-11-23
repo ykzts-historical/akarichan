@@ -48,7 +48,7 @@
           if (!_message_node)
             _message_node = this.create_message_node();
           if (message.nodeType) {
-              _message_node.parentNode.replaceChild(message, _message_node);
+            _message_node.parentNode.replaceChild(message, _message_node);
           } else if (typeof message === 'string') {
             var text_node = document.createTextNode(message);
             if (_message_node.firstChild) {
