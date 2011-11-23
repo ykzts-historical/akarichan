@@ -102,6 +102,7 @@
     };
 
     $.set_elevator = function() {
+      var ka = this.ka;
       var sections = this.sections;
       var list_node = doc.createElement('ul');
       var point = doc.querySelector('script:first-of-type');
@@ -111,7 +112,7 @@
         list_node.appendChild(list_item);
         list_item.setAttribute('class', value);
         list_item.addEventListener('click', function() {
-          sections[value]();
+          ka[value]();
         }, false);
       });
       point.insertAdjacentElement('beforeBegin', list_node);
