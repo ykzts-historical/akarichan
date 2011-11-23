@@ -40,8 +40,18 @@
           return doc.getElementById('message');
         },
         set: function(message) {
+          var node;
           var _message_node = this.message;
-          var text_node = doc.createTextNode(message);
+          if (!message) {
+            _message_node.prentNode.removeChild(_message_node);
+            return null;
+          } else if (typeof message === 'string') {
+            node = doc.createTextNode(message);
+          } else if (message.nodeType) {
+            node = message;
+          } else {
+            return _message_node;
+          }
           if (!_message_node) {
             var selector = [
               'section:last-of-type',
@@ -53,10 +63,12 @@
             _message_node.setAttribute('id', 'message');
             point.insertAdjacentElement('afterEnd', _message_node);
           }
-          if (_message_node.firstChild) {
-            _message_node.replaceChild(text_node, _message_node.firstChild);
+          if (message.nodeType) {
+            _message_node.replaceChild(node, _message_node);
+          } else if (_message_node.firstChild) {
+            _message_node.replaceChild(node, _message_node.firstChild);
           } else {
-            _message_node.appendChild(text_node);
+            _message_node.appendChild(node);
           }
           return _message_node;
         }
@@ -284,7 +296,7 @@
         var sections = res.querySelectorAll('body > section, #message');
         for (var i=0, len=sections.length; i<len; i++)
           df.appendChild(sections[i]);
-        this.ss.message.parentNode.replaceChild(doc.importNode(df, true), this.ss.message);
+        this.ss.message = doc.importNode(df, true);
         this.ss.page_title = res.querySelector('head title').textContent;
         this.add_event();
       }.bind(this);
@@ -331,7 +343,7 @@
       range.setStartBefore(sections[0]);
       range.setEndAfter(sections[len-1]);
       range.deleteContents();
-      this.ss.message.parentNode.removeChild(this.ss.message);
+      this.ss.message = null;
     };
 
     $.open = function(section) {
