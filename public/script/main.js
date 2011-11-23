@@ -373,18 +373,14 @@
     };
 
     $.current_section = function() {
-      var sections = this.nodes;
-      var positions = this.positions;
-      var len = sections.length;
-      if (!len)
-        return null;
       var pos = win.scrollY;
-      for (var i=len; i>=0; i--) {
-        var sec_pos = positions[i];
-        if (sec_pos-pos <= 0)
-          break;
-      }
-      return sections[positions.indexOf(sec_pos)];
+      var sections = this.nodes;
+      if (!sections.length)
+        return null;
+      return sections.reduceRight(function(prev, current) {
+        return prev.offsetTop - pos <= 0 ?
+          prev : current;
+      });
     };
 
     $.go = function(section, num) {
