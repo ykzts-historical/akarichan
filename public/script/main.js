@@ -15,7 +15,7 @@
     this.sections = new Sections(this);
     this.ap = new AppendPage(this);
     this.form = new Form(this);
-    this.ka = new KeypressAction(this);
+    this.ka = new KeyboardAction(this);
     this.add_event();
     this.set_elevator();
   }
@@ -165,7 +165,7 @@
     };
   })(Form.prototype);
 
-  function KeypressAction(ss) {
+  function KeyboardAction(ss) {
     this.ap = ss.ap;
     this.sections = ss.sections;
     this.form = ss.form;
@@ -178,11 +178,13 @@
     };
 
     $.next = function() {
-      this.sections.next();
+      var current = this.sections.current_section();
+      this.sections.next(current);
     };
 
     $.prev = function() {
-      this.sections.prev();
+      var current = this.sections.current_section();
+      this.sections.prev(current);
     };
 
     $.pinned = function() {
@@ -208,7 +210,7 @@
     $.focus = function() {
       this.form.text_field.focus();
     };
-  })(KeypressAction.prototype);
+  })(KeyboardAction.prototype);
 
   function AppendPage(ss) {
     this.ss = ss;
@@ -379,14 +381,11 @@
       return sections[positions.indexOf(sec_pos)];
     };
 
-    $.go = function(num) {
+    $.go = function(section, num) {
       var sections = this.nodes;
       var positions = this.positions;
       var len = sections.length;
-      var current = this.current_section();
-      if (!current)
-        return -1;
-      var i = positions.indexOf(current.offsetTop);
+      var i = positions.indexOf(section.offsetTop);
       i = i + num;
       if (i < 0 || i > len - 1)
         return -1;
@@ -394,12 +393,12 @@
       return sections[i];
     };
 
-    $.prev = function() {
-      return this.go(-1);
+    $.prev = function(section) {
+      return this.go(section, -1);
     };
 
-    $.next = function() {
-      return this.go(+1);
+    $.next = function(section) {
+      return this.go(section, +1);
     };
   })(Sections.prototype);
 
