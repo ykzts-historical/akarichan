@@ -103,6 +103,7 @@
     };
 
     $.set_elevator = function() {
+      var sections = this.sections;
       var list_node = doc.createElement('ul');
       var point = doc.querySelector('script:first-of-type');
       list_node.setAttribute('id', 'elevator');
@@ -111,9 +112,9 @@
         list_node.appendChild(list_item);
         list_item.setAttribute('class', value);
         list_item.addEventListener('click', function() {
-          this.sections[value]();
-        }.bind(this), false);
-      }.bind(this));
+          sections[value]();
+        }, false);
+      });
       point.insertAdjacentElement('beforeBegin', list_node);
     };
   })(SiteScript.prototype);
