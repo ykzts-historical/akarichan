@@ -64,7 +64,7 @@
             point.insertAdjacentElement('afterEnd', _message_node);
           }
           if (message.nodeType) {
-            _message_node.replaceChild(node, _message_node);
+            _message_node.parentNode.replaceChild(node, _message_node);
           } else if (_message_node.firstChild) {
             _message_node.replaceChild(node, _message_node.firstChild);
           } else {
