@@ -8,6 +8,5 @@ module.exports = [
     res.redirect('/' + username);
   }],
   ['/_oauth/sign(in|out)', views.oauth.login],
-  ['/_dashboard', views.dashboard],
   ['/:username', views.user]
 ];
