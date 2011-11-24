@@ -18,6 +18,8 @@ app.configure(function() {
   });
   app.set('views', settings.TEMPLATE_DIR);
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({secret: 'secret keys'}));
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
       res.contentType('xhtml');
