@@ -7,21 +7,20 @@ var views = require('./index');
 var tum = exports.tum = new Tumblr(
   settings.TUMBLR.API_KEY, settings.TUMBLR.API_SECRET_KEY);
 
-module.exports = function(req, res) {
-  var oauth = req.session.oauth;
+exports.index = function(req, res) {
+  var session = req.session;
   var username = req.params.username;
   var format = req.params.format || 'html';
-  var slice_id = req.query.slice_id || null;
   var page = (req.query.page || 1) * 1;
 
   if (username === '_dashboard') {
-    if (!oauth) {
+    if (!session.oauth) {
       res.redirect('/_oauth/signin');
       return;
     }
     tum.dashboard = true;
-    tum.access_token = oauth.access_token;
-    tum.access_token_secret = oauth.access_token_secret;
+    tum.access_token = session.oauth.access_token;
+    tum.access_token_secret = session.oauth.access_token_secret;
   } else {
     tum.hostname = username;
     if (username.indexOf('.') < 0)
