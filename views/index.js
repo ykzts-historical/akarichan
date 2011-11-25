@@ -4,7 +4,11 @@ var path = require('path');
 var settings = require('../settings');
 
 exports.index = function(req, res) {
-  res.render('index');
+  if (!req.session.userinfo) {
+    res.render('index');
+  } else {
+    res.redirect('/_dashboard');
+  }
 };
 
 exports.http404 = function(req, res) {
