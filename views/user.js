@@ -1,52 +1,50 @@
 
-var Tumblr = require('../lib/tumblr');
+var tumblr = require('../lib/tumblr');
 var utils = require('../lib/utils');
 var settings = require('../settings');
 var views = require('./index');
 
-var tum = exports.tum = new Tumblr(
-  settings.TUMBLR.API_KEY, settings.TUMBLR.API_SECRET_KEY);
-
 exports.index = function(req, res) {
-  var session = req.session;
+  var oauth = req.session.oauth || {};
   var username = req.params.username;
   var format = req.params.format || 'html';
   var page = (req.query.page || 1) * 1;
 
+  var options = {
+    consumer_key: settings.TUMBLR.CONSUMER_KEY,
+    secret_key: settings.TUMBLR.SECRET_KEY,
+    type: 'photo',
+    limit: 20,
+    username: username,
+    page: page
+  };
+
   if (username === '_dashboard') {
-    if (!session.oauth) {
+    if (oauth.access_token && oauth.access_token_secret) {
+      options.access_token = oauth.access_token;
+      options.access_token_secret = oauth.access_token_secret;
+    } else {
       res.redirect('/_oauth/signin');
       return;
     }
-    tum.dashboard = true;
-    tum.access_token = session.oauth.access_token;
-    tum.access_token_secret = session.oauth.access_token_secret;
-  } else {
-    tum.hostname = username;
-    if (username.indexOf('.') < 0)
-      tum.hostname += '.tumblr.com';
   }
-  tum.limit = 20;
-  tum.type = 'photo';
-  tum.page = page;
 
-  tum.on('data', function(data) {
-    var posts = data.response.posts || [];
-    var sections = posts.map(function(post, num) {
-      var section = utils.section_simplify(post);
-      section.num = num + 1;
-      return section;
-    });
-    if (!sections.length) {
+  tumblr.request(options, function(tum) {
+    tum.on('data', function(data) {
+      console.log(tum);
+      var posts = data.response.posts || [];
+      var sections = posts.map(utils.section_simplify);
+      if (!sections.length) {
+        tum.emit('error');
+        return;
+      }
+      res.render('user', {
+        username: username,
+        page: page,
+        sections: sections
+      });
+    }).on('error', function(e) {
       views.http404(req, res);
-      return;
-    }
-    res.render('user', {
-      username: username,
-      page: page,
-      sections: sections
     });
-  }).on('error', function(err) {
-    views.http404(req, res);
   }).end();
 };

@@ -1,11 +1,15 @@
 
+var tumblr = require('../lib/tumblr');
 var settings = require('../settings');
-var tum = require('./user').tum;
 
 const TUMBLR_AUTHORIZE_URI = 'http://www.tumblr.com/oauth/authorize';
 
+var oa = (new tumblr.Tumblr(
+  settings.TUMBLR.CONSUMER_KEY,
+  settings.TUMBLR.SECRET_KEY
+)).oa;
+
 exports.login = function(req, res) {
-  var oa = tum.oa;
   var session = req.session;
   if (!session.oauth) {
     oa.getOAuthRequestToken(function(err, token, token_secret) {
