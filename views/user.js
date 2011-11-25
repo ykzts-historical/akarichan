@@ -31,7 +31,6 @@ exports.index = function(req, res) {
 
   tumblr.request(options, function(tum) {
     tum.on('data', function(data) {
-      console.log(tum);
       var posts = data.response.posts || [];
       var sections = posts.map(utils.section_simplify);
       if (!sections.length) {
