@@ -4,16 +4,34 @@ var settings = require('../settings');
 
 exports.login = function(req, res) {
   var session = req.session;
-  var tum = new Tumblr(settings.TUMBLR.CONSUMER_KEY, settings.TUMBLR.SECRET_KEY);
-  if (!session.oauth) {
-    tum.get_request_token(function(token, token_secret, authorize_uri) {
-      session.oauth = {};
-      session.oauth.token = token;
-      session.oauth.token_secret = token_secret;
-      res.redirect(authorize_uri);
+  if (req.url === '/_oauth/signout') {
+    req.session.destroy(function(err) {
+      res.redirect('/');
     });
-    return;
+  } else {
+    if (!session.oauth) {
+      get_request_token(req, res);
+    } else {
+      get_access_token(req, res);
+    }
   }
+};
+
+function get_request_token(req, res) {
+  var session = req.session;
+  var tum = init_tumblr();
+  tum.get_request_token(function(token, token_secret, authorize_uri) {
+    session.oauth = {};
+    session.oauth.token = token;
+    session.oauth.token_secret = token_secret;
+    res.redirect(authorize_uri);
+  });
+  return;
+}
+
+function get_access_token(req, res) {
+  var session = req.session;
+  var tum = init_tumblr();
   var token = session.oauth.token;
   var token_secret = session.oauth.token_secret;
   var verifier = session.oauth.verifier = req.query.oauth_verifier;
@@ -27,4 +45,8 @@ exports.login = function(req, res) {
       });
     }
   );
-};
+}
+
+function init_tumblr() {
+  return new Tumblr(settings.TUMBLR.CONSUMER_KEY, settings.TUMBLR.SECRET_KEY);
+}
