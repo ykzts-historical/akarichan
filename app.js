@@ -35,7 +35,7 @@ app.configure('production', function() {
 
 app.configure('development', function() {
   app.set('port', 8080);
-  //app.use(express.logger({format:':method :url'}));
+  app.use(express.logger({format:':method :url'}));
   app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true
