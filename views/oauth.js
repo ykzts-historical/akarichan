@@ -11,8 +11,11 @@ exports.login = function(req, res) {
   } else {
     if (!session.oauth) {
       get_request_token(req, res);
-    } else {
+    } else if (req.query.oauth_verifier) {
       get_access_token(req, res);
+    } else {
+      delete session.oauth;
+      res.redirect('/');
     }
   }
 };
