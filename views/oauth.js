@@ -6,7 +6,6 @@ exports.login = function(req, res) {
   var session = req.session;
   var tum = new Tumblr(settings.TUMBLR.CONSUMER_KEY, settings.TUMBLR.SECRET_KEY);
   if (!session.oauth) {
-    tum.oauth_callback = 'http://desire.sh/_oauth/signin';
     tum.get_request_token(function(token, token_secret, authorize_uri) {
       session.oauth = {};
       session.oauth.token = token;
