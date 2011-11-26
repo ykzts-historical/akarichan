@@ -1,6 +1,7 @@
 
 var path = require('path');
 var express = require('express');
+var RedisStore = require('connect-redis')(express);
 var helpers = require('./helpers');
 var routes = require('./routes');
 var settings = require('./settings');
@@ -20,7 +21,8 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
-    secret: 'secret keys'
+    secret: 'secret keys',
+    store: new RedisStore()
   }));
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
