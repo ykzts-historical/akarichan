@@ -140,17 +140,19 @@
     };
 
     $.add_event = function() {
-      var self = this;
-      win.addEventListener('scroll', function() {
-        if (self.ap.username !== '_dashboard')
-          return;
-        var current = self.sections.current_section();
-        var blog_name = current.querySelector('.blog_name').textContent;
-        self.text_field.value = blog_name;
-      }, false);
+      win.addEventListener('scroll', this.onscroll.bind(this), false);
       this.text_field.addEventListener('focus', this.onfocus, false);
       this.text_field.addEventListener('blur', this.onfocus, false);
       this.form.addEventListener('submit', this.onsubmit.bind(this), false);
+      this.onscroll();
+    };
+
+    $.onscroll = function() {
+      if (this.ap.username !== '_dashboard')
+        return;
+      var current = this.sections.current_section();
+      var blog_name = current.querySelector('.blog_name').textContent;
+      this.text_field.value = blog_name;
     };
 
     $.onsubmit = function(event) {
