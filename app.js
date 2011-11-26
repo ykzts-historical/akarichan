@@ -20,10 +20,6 @@ app.configure(function() {
   app.set('views', settings.TEMPLATE_DIR);
   app.use(express.bodyParser());
   app.use(express.cookieParser());
-  app.use(express.session({
-    secret: 'secret keys',
-    store: new RedisStore()
-  }));
   app.use(function(req, res, next) {
     if (!path.extname(req.url))
       res.contentType('xhtml');
@@ -33,10 +29,17 @@ app.configure(function() {
 
 app.configure('production', function() {
   app.use(express.errorHandler());
+    app.use(express.session({
+    secret: 'secret keys',
+    store: new RedisStore()
+  }));
 });
 
 app.configure('development', function() {
   app.set('port', 8080);
+  app.use(express.session({
+    secret: 'secret keys'
+  }));
   app.use(express.logger({format:':method :url'}));
   app.use(express.errorHandler({
     dumpExceptions: true,
