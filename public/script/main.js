@@ -285,21 +285,22 @@
     };
 
     $.request = function() {
+      var self = this;
       if (this.uri !== URI && 'pushState' in win.history)
         win.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
       this.ss.message = 'loading...';
       var req = new XMLHttpRequest();
-      req.onreadystatechange = function() {
+      req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4)
           return;
         if (req.status !== 200) {
-          this.ss.page_title = this.ss.message = '404 not found.';
+          self.ss.page_title = self.ss.message = '404 not found.';
           return;
         }
         var res = req.responseXML;
-        this.append(res);
-        this.add_event();
-      }.bind(this);
+        self.append(res);
+        self.add_event();
+      }, false);
       req.open('GET', this.uri);
       req.send(null);
     };
@@ -308,9 +309,7 @@
       var df = res.createDocumentFragment();
       var sections = Array.prototype.slice.apply(
         res.querySelectorAll('body > section, #message'));
-      sections.forEach(function(section) {
-        df.appendChild(section);
-      });
+      sections.forEach(df.appendChild, df);
       this.ss.message = doc.importNode(df, true);
       this.ss.page_title = res.querySelector('head title').textContent;
     };
