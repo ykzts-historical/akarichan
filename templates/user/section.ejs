@@ -6,6 +6,8 @@
           <dl>
             <dt>Blog Name</dt>
             <dd class="blog_name"><%= section.blog_name %></dd>
+            <dt>Date</dt>
+            <dd><time datetime="<%= section.date.toISOString() %>"><%= section.date %></time></dd>
             <dt>POST URI</dt>
             <dd><a href="<%= section.uri %>" class="uri"><%= section.uri %></a></dd>
           </dl>
