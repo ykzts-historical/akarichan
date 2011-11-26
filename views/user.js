@@ -6,8 +6,8 @@ var views = require('./index');
 
 exports.index = function(req, res) {
   var oauth = req.session.oauth || {};
-  var username = req.params.username;
-  var format = req.params.format || 'html';
+  var username = req.params.username || false;
+  var hostname = req.params.hostname || false;
   var page = (req.query.page || 1) * 1;
 
   var options = {
@@ -15,9 +15,14 @@ exports.index = function(req, res) {
     secret_key: settings.TUMBLR.SECRET_KEY,
     type: 'photo',
     limit: 20,
-    username: username,
     page: page
   };
+
+  if (hostname) {
+    options.hostname = hostname;
+  } else {
+    options.username = username;
+  }
 
   if (username === '_dashboard') {
     if (oauth.access_token && oauth.access_token_secret) {
@@ -38,7 +43,7 @@ exports.index = function(req, res) {
         return;
       }
       res.render('user', {
-        username: username,
+        username: username || hostname,
         page: page,
         sections: sections
       });

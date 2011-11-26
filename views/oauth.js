@@ -4,19 +4,25 @@ var settings = require('../settings');
 
 exports.login = function(req, res) {
   var session = req.session;
-  if (req.url === '/_oauth/signout') {
-    req.session.destroy(function(err) {
+  switch (req.params.action) {
+    case 'signout':
+      req.session.destroy(function(err) {
+        res.redirect('/');
+      });
+      break;
+    case 'signin':
+      if (!session.oauth) {
+        get_request_token(req, res);
+      } else if (req.query.oauth_verifier) {
+        get_access_token(req, res);
+      } else {
+        delete session.oauth;
+        res.redirect('/');
+      }
+      break;
+    default:
       res.redirect('/');
-    });
-  } else {
-    if (!session.oauth) {
-      get_request_token(req, res);
-    } else if (req.query.oauth_verifier) {
-      get_access_token(req, res);
-    } else {
-      delete session.oauth;
-      res.redirect('/');
-    }
+      break;
   }
 };
 

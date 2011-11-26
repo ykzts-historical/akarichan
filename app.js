@@ -21,7 +21,7 @@ app.configure(function() {
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(function(req, res, next) {
-    if (!path.extname(req.url))
+    if (!app.lookup.all(req.url).length)
       res.contentType('xhtml');
     next();
   });

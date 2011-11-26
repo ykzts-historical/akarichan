@@ -223,7 +223,7 @@
   }
 
   (function($) {
-    var _expr = /(?:http:\/\/[^/]+\/(\w+)?(?:\?page=(\d+))?)?/;
+    var _expr = /(?:http:\/\/[^/]+\/([\w\.]+)?(?:\?page=(\d+))?)?/;
 
     Object.defineProperties($, {
       username: {

@@ -8,6 +8,7 @@ module.exports = [
     var username = req.body.tumblr_username;
     res.redirect('/' + username);
   }],
-  ['/_oauth/sign(in|out)', views.oauth.login],
-  ['/:username', views.user]
+  ['/_oauth/:action(sign(in|out))', views.oauth.login],
+  ['/:username([^_][^\/\.]+|_dashboard)', views.user],
+  ['/:hostname([^_][^\/]+)', views.user]
 ];
