@@ -136,6 +136,18 @@
         this.text_field.value = default_value;
         this.text_field.setAttribute('class', 'initial_value');
       }
+      this.add_event();
+    };
+
+    $.add_event = function() {
+      var self = this;
+      win.addEventListener('scroll', function() {
+        if (self.ap.username !== '_dashboard')
+          return;
+        var current = self.sections.current_section();
+        var blog_name = current.querySelector('.blog_name').textContent;
+        self.text_field.value = blog_name;
+      }, false);
       this.text_field.addEventListener('focus', this.onfocus, false);
       this.text_field.addEventListener('blur', this.onfocus, false);
       this.form.addEventListener('submit', this.onsubmit.bind(this), false);
@@ -223,7 +235,7 @@
   }
 
   (function($) {
-    var _expr = /(?:http:\/\/[^/]+\/([\w\.]+)?(?:\?page=(\d+))?)?/;
+    var _expr = /(?:(?:http:\/\/[^/]+)?\/([\w\.]+)?(?:\?page=(\d+))?)?/;
 
     Object.defineProperties($, {
       username: {
