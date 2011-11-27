@@ -108,7 +108,7 @@ body > section {
 }
 
 body > section.pinned,
-body > section.rebloged {
+body > section.reblogged {
   background-clip: content-box;
 }
 
@@ -116,7 +116,7 @@ body > section.pinned {
   background-color: rgba(255, 255, 255, .5);
 }
 
-body > section.rebloged {
+body > section.reblogged {
   background-color: rgba(0, 0, 0, .5);
 }
 

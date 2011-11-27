@@ -240,7 +240,7 @@
       req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4 || req.status !== 200)
           return;
-        current.setAttribute('class', 'rebloged');
+        current.setAttribute('class', 'reblogged');
       });
       req.open('GET', uri);
       req.send(null);
