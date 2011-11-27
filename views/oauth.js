@@ -52,7 +52,10 @@ function get_access_token(req, res) {
       session.oauth.access_token = access_token;
       session.oauth.access_token_secret = access_token_secret;
       tum.get_userinfo(function(data) {
-        session.userinfo = data.response;
+        var userinfo = data.response;
+        var blogs = userinfo.user.blogs;
+        session.userinfo = userinfo;
+        session.blog_url = blogs[blogs.length-1].url;
         res.redirect(back);
       });
     }

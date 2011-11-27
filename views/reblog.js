@@ -23,10 +23,7 @@ exports.index = function(req, res) {
   ['access_token', 'access_token_secret'].forEach(function(key) {
     options[key] = session.oauth[key];
   });
-  options.hostname = (function(blogs) {
-    var len = blogs.length;
-    return url.parse(blogs[len-1].url).hostname;
-  })(session.userinfo.user.blogs);
+  options.hostname = url.parse(req.session.blog_url).hostname;
 
   tumblr.request(options, function(tum) {
     tum.on('data', function(data) {

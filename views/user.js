@@ -6,6 +6,7 @@ var views = require('./index');
 
 exports.index = function(req, res) {
   var oauth = req.session.oauth || {};
+  var blog_url = req.session.blog_url || null;
   var username = req.params.username || false;
   var hostname = req.params.hostname || false;
   var page = (req.query.page || 1) * 1;
@@ -39,7 +40,7 @@ exports.index = function(req, res) {
   tumblr.request(options, function(tum) {
     tum.on('data', function(data) {
       var posts = data.response.posts || [];
-      var sections = posts.map(utils.section_simplify);
+      var sections = posts.map(utils.section_simplify, {blog_url: blog_url});
       if (!sections.length) {
         tum.emit('error');
         return;
