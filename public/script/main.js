@@ -1,4 +1,6 @@
 (function(doc, win) {
+  "use strict";
+
   var HOST = location.host;
   var URI = location.href;
   var KEY_BIND = {
@@ -151,6 +153,8 @@
       if (this.ap.username !== '_dashboard')
         return;
       var current = this.sections.current_section();
+      if (!current)
+        return;
       var blog_name = current.querySelector('.blog_name').textContent;
       this.text_field.value = blog_name;
     };
@@ -300,17 +304,15 @@
 
     $.request = function() {
       var self = this;
-      if (this.uri !== URI && 'pushState' in win.history)
+      if (this.uri !== URI) {
+        URI = this.uri;
         win.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
+      }
       this.ss.message = 'loading...';
       var req = new XMLHttpRequest();
       req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4)
           return;
-        if (req.status !== 200) {
-          self.ss.page_title = self.ss.message = '404 not found.';
-          return;
-        }
         var res = req.responseXML;
         self.append(res);
         self.add_event();
