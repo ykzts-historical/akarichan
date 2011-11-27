@@ -9,7 +9,8 @@
     k: 'prev',
     p: 'pinned',
     o: 'open',
-    f: 'focus'
+    f: 'focus',
+    s: 'reblog'
   };
 
   function SiteScript() {
