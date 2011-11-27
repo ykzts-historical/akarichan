@@ -11,6 +11,9 @@
             <dt>POST URI</dt>
             <dd><a href="<%= section.uri %>" class="uri"><%= section.uri %></a></dd>
           </dl>
+          <form action="/_reblog/<%= section.id %>?reblog_key=<%= section.reblog_key %>" method="GET">
+            <p><input type="submit" value="REBLOG!" /></p>
+          </form>
         </figcaption>
       </figure>
     </section>

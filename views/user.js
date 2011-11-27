@@ -11,6 +11,7 @@ exports.index = function(req, res) {
   var page = (req.query.page || 1) * 1;
 
   var options = {
+    protocol: 'posts:',
     consumer_key: settings.TUMBLR.CONSUMER_KEY,
     secret_key: settings.TUMBLR.SECRET_KEY,
     type: 'photo',
@@ -20,16 +21,17 @@ exports.index = function(req, res) {
 
   if (hostname) {
     options.hostname = hostname;
-  } else {
-    options.username = username;
+  } else if (username.indexOf('.') < 0) {
+    options.hostname = username + '.tumblr.com';
   }
 
   if (username === '_dashboard') {
     if (oauth.access_token && oauth.access_token_secret) {
+      options.protocol = 'dashboard:';
       options.access_token = oauth.access_token;
       options.access_token_secret = oauth.access_token_secret;
     } else {
-      res.redirect('/_oauth/signin');
+      res.redirect('/_oauth/signin?back=' + encodeURIComponent(req.url));
       return;
     }
   }

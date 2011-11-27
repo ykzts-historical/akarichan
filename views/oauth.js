@@ -28,9 +28,11 @@ exports.login = function(req, res) {
 
 function get_request_token(req, res) {
   var session = req.session;
+  var back = req.query.back || '/';
   var tum = init_tumblr();
   tum.get_request_token(function(token, token_secret, authorize_uri) {
     session.oauth = {};
+    session.oauth.back = back;
     session.oauth.token = token;
     session.oauth.token_secret = token_secret;
     res.redirect(authorize_uri);
@@ -40,6 +42,7 @@ function get_request_token(req, res) {
 
 function get_access_token(req, res) {
   var session = req.session;
+  var back = session.oauth.back;
   var tum = init_tumblr();
   var token = session.oauth.token;
   var token_secret = session.oauth.token_secret;
@@ -50,7 +53,7 @@ function get_access_token(req, res) {
       session.oauth.access_token_secret = access_token_secret;
       tum.get_userinfo(function(data) {
         session.userinfo = data.response;
-        res.redirect('/_dashboard');
+        res.redirect(back);
       });
     }
   );

@@ -231,6 +231,19 @@
     $.focus = function() {
       this.form.text_field.focus();
     };
+
+    $.reblog = function() {
+      var current = this.sections.current_section();
+      var uri = current.querySelector('form').getAttribute('action');
+      var req = new XMLHttpRequest();
+      req.addEventListener('readystatechange', function() {
+        if (req.readyState !== 4 || req.status !== 200)
+          return;
+        current.setAttribute('class', 'rebloged');
+      });
+      req.open('GET', uri);
+      req.send(null);
+    };
   })(KeyboardAction.prototype);
 
   function AppendPage(ss) {
