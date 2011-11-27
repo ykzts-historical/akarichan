@@ -107,9 +107,17 @@ body > section {
   padding-top: 4em;
 }
 
+body > section.pinned,
+body > section.rebloged {
+  background-clip: content-box;
+}
+
 body > section.pinned {
   background-color: rgba(255, 255, 255, .5);
-  background-clip: content-box;
+}
+
+body > section.rebloged {
+  background-color: rgba(0, 0, 0, .5);
 }
 
 body > section h1 {
