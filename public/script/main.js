@@ -240,7 +240,16 @@
       req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4 || req.status !== 200)
           return;
-        current.setAttribute('class', 'reblogged');
+        var res = JSON.parse(req.responseText);
+        switch (res.meta.status) {
+          case 200:
+            current.setAttribute('class', 'reblogged');
+            break;
+          default:
+            var errors = res.response.errors || [];
+            alert(errors[0]);
+            break;
+        }
       });
       req.open('GET', uri);
       req.send(null);
