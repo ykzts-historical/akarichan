@@ -242,7 +242,7 @@
           return;
         var res = JSON.parse(req.responseText);
         switch (res.meta.status) {
-          case 200:
+          case 201:
             current.setAttribute('class', 'reblogged');
             break;
           default:
