@@ -1,0 +1,5 @@
+
+$ cp settings.sample.js settings.js
+$ export TUMBLR_CONSUMER_KEY=<consumer_key>
+$ export TUMBLR_SECRET_KEY=<secret_key>
+$ node app.js

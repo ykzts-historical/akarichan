@@ -7,7 +7,7 @@ var settings = require('./settings');
 var app = module.exports = express.createServer();
 
 app.configure(function() {
-  app.set('port', 3000);
+  app.set('port', settings.PORT);
   app.set('view engine', 'ejs');
   app.set('view options', {
     layout: true,
@@ -37,7 +37,6 @@ app.configure('production', function() {
 });
 
 app.configure('development', function() {
-  app.set('port', 8080);
   app.use(express.errorHandler({
     dumpExceptions: true,
     showStack: true

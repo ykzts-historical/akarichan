@@ -9,11 +9,12 @@
 <% if (next_page()) { %>
     <link rel="next" href="<%= next_page() %>" />
 <% } %>
-    <link rel="stylesheet" type="text/css" href="/style/main.css" />
+    <link rel="stylesheet" type="text/css" href="<%= settings.STATIC_URI %>/style/main.css" />
     <title><%= get_title() %></title>
   </head>
   <body>
     <h1><%= get_title() %></h1>
+<%- body %>
     <fieldset>
       <legend><label for="tumblr_username">Form</label></legend>
       <form action="/post-method" method="POST">
@@ -24,8 +25,7 @@
         <input type="submit" value="submit" />
       </form>
     </fieldset>
-<%- body %>
-    <script type="application/javascript" src="/script/dummy.js"></script>
-    <script type="application/javascript" src="/script/main.js"></script>
+    <script type="application/javascript" src="<%= settings.STATIC_URI %>/script/dummy.js"></script>
+    <script type="application/javascript" src="<%= settings.STATIC_URI %>/script/main.js"></script>
   </body>
 </html>

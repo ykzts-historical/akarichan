@@ -1,4 +1,4 @@
-(function(doc, win) {
+(function(win, doc) {
   "use strict";
 
   var HOST = location.host;
@@ -53,7 +53,7 @@
           if (message.nodeType) {
             _message_node.parentNode.replaceChild(message, _message_node);
           } else if (typeof message === 'string') {
-            var text_node = document.createTextNode(message);
+            var text_node = doc.createTextNode(message);
             if (_message_node.firstChild) {
               _message_node.replaceChild(text_node, _message_node.firstChild);
             } else {
@@ -98,7 +98,7 @@
       var _message_node = doc.createElement('p');
       var selector = [
         'section:last-of-type',
-        'body > fieldset'
+        'body > h1'
       ].join(', ');
       var point = doc.querySelector(selector);
       _message_node.setAttribute('id', 'message');
@@ -109,7 +109,7 @@
     $.set_elevator = function() {
       var ka = this.ka;
       var list_node = doc.createElement('ul');
-      var point = doc.querySelector('script:first-of-type');
+      var point = doc.querySelector('body > fieldset');
       list_node.setAttribute('id', 'elevator');
       ['prev', 'next'].forEach(function(value) {
         var list_item = doc.createElement('li');
@@ -398,7 +398,7 @@
     $.open = function(section) {
       var anchor = section.querySelector('a.uri');
       var event = doc.createEvent('MouseEvent');
-      event.initMouseEvent('click', true, true, window,
+      event.initMouseEvent('click', true, true, win,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
       anchor.dispatchEvent(event);
     };
@@ -446,4 +446,4 @@
   doc.addEventListener('DOMContentLoaded', function() {
     win.ss = new SiteScript();
   }, false);
-})(window.document, window);
+})(window, window.document);
