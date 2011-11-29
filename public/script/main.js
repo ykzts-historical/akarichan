@@ -124,7 +124,7 @@
   })(SiteScript.prototype);
 
   function Form(ss) {
-    this.form = doc.getElementsByTagName('form')[0];
+    this.form = doc.querySelector('body > fieldset form');
     this.text_field = doc.getElementById('tumblr_username');
     this.sections = ss.sections;
     this.ap = ss.ap;
