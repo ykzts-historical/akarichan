@@ -8,7 +8,6 @@ module.exports = [
     res.redirect('/' + username);
   }],
   ['/_oauth/:action(sign(in|out))', views.oauth.login],
-  ['/_reblog/:id', views.reblog],
-  ['/:username([^_][^\/\.]+|_dashboard)', views.posts],
-  ['/:hostname([^_][^\/]+)', views.posts]
+  ['/_reblog/:id(\\d+)', views.reblog],
+  ['/(:username([^_][^/.]+|_dashboard)|:hostname([^_][^/]+))', views.posts]
 ];

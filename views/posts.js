@@ -22,11 +22,7 @@ exports.index = function(req, res) {
 
   if (hostname) {
     options.hostname = hostname;
-  } else if (username.indexOf('.') < 0) {
-    options.hostname = username + '.tumblr.com';
-  }
-
-  if (username === '_dashboard') {
+  } else if (username === '_dashboard') {
     if (oauth.access_token && oauth.access_token_secret) {
       options.protocol = 'dashboard:';
       options.access_token = oauth.access_token;
@@ -35,6 +31,8 @@ exports.index = function(req, res) {
       res.redirect('/_oauth/signin?back=' + encodeURIComponent(req.url));
       return;
     }
+  } else if (username.indexOf('.') < 0) {
+    options.hostname = username + '.tumblr.com';
   }
 
   tumblr.request(options, function(tum) {
@@ -45,7 +43,7 @@ exports.index = function(req, res) {
         tum.emit('error');
         return;
       }
-      res.render('user', {
+      res.render('posts', {
         username: username || hostname,
         page: page,
         sections: sections
