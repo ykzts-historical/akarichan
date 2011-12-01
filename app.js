@@ -17,6 +17,7 @@ app.configure(function() {
     page: ''
   });
   app.set('views', settings.TEMPLATE_DIR);
+  app.set('strict routing', true);
   app.use(express.bodyParser());
   app.use(express.cookieParser());
 });

@@ -9,5 +9,5 @@ module.exports = [
   }],
   ['/_oauth/:action(sign(in|out))', views.oauth.login],
   ['/_reblog/:id(\\d+)', views.reblog],
-  ['/(:username([^_][^/.]+|_dashboard)|:hostname([^_][^/]+))', views.posts]
+  ['/(:username([^_][^/.]+|_dashboard)|/:hostname([^_][^/]+))', views.posts]
 ];
