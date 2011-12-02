@@ -5,8 +5,10 @@
   padding: 0;
 
   border: 0;
+}
 
-  line-height: 1;
+*::before, *::after {
+  display: none;
 }
 
 html {
@@ -80,24 +82,11 @@ body > section {
   padding-top: 4em;
 }
 
-body > section.pinned,
-body > section.reblogged {
-  background-clip: content-box;
-}
-
-body > section.pinned {
-  background-color: rgba(255, 255, 255, .5);
-}
-
-body > section.reblogged {
-  background-color: rgba(0, 0, 0, .5);
-}
-
 body > section h1 {
   display: none;
 }
 
-body > section img {
+body > section figure > q {
   display: block;
 
   max-width: 90%;
@@ -110,6 +99,31 @@ body > section img {
   box-shadow: .4em .4em .4em gray;
 
   background-color: white;
+}
+
+body > section.pinned figure > q::before,
+body > section.reblogged figure > q::before {
+  display: block;
+  content: "";
+
+  position: relative;
+  top: 1em;
+
+  width: 1em;
+  height: 1em;
+
+  margin-top: -1em;
+
+  background-image: -webkit-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+  background-image: -moz-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+  background-image: -o-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+
+  font-size: 3em;
+}
+
+body > section q img {
+  display: block;
+  width: 100%;
 }
 
 body > section figcaption {
