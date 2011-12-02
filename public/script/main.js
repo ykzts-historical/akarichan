@@ -114,7 +114,7 @@
       ['prev', 'next'].forEach(function(value) {
         var list_item = doc.createElement('li');
         list_node.appendChild(list_item);
-        list_item.setAttribute('class', value);
+        list_item.classList.add(value);
         list_item.addEventListener('click', function() {
           ka[value]();
         }, false);
@@ -137,7 +137,7 @@
     $.init = function() {
       if (!this.text_field.value) {
         this.text_field.value = default_value;
-        this.text_field.setAttribute('class', 'initial_value');
+        this.text_field.classList.add('initial_value');
       }
       this.add_event();
     };
@@ -175,10 +175,10 @@
     $.onfocus = function(event) {
       if (this.value === default_value) {
         this.value = '';
-        this.removeAttribute('class');
+        this.classList.remove('initial_value');
       } else if (this.value === '') {
         this.value = default_value;
-        this.setAttribute('class', 'initial_value');
+        this.classList.add('initial_value');
       }
       var len = this.value.length;
       if (event.type === 'focus' && len) {
@@ -243,7 +243,7 @@
         var res = JSON.parse(req.responseText);
         switch (res.meta.status) {
           case 201:
-            current.setAttribute('class', 'reblogged');
+            current.classList.add('reblogged');
             break;
           default:
             var errors = res.response.errors || [];
@@ -404,11 +404,7 @@
     };
 
     $.set_pin = function(section) {
-      if (section.getAttribute('class')) {
-        section.removeAttribute('class');
-      } else {
-        section.setAttribute('class', 'pinned');
-      }
+      section.classList.toggle('pinned');
     };
 
     $.current_section = function() {
