@@ -21,34 +21,6 @@ body {
   margin: 0;
 }
 
-#elevator li {
-  display: block;
-
-  position: fixed;
-  bottom: 0;
-
-  width: 20%;
-  height: 15%;
-}
-
-#elevator li:hover {
-  opacity: .3;
-
-  background-color: black;
-}
-
-#elevator li.prev { left: 0; }
-#elevator li.next { right: 0; }
-
-#elevator li a {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  text-indent: -100000px;
-}
-
 body > h1 {
   display: none;
 }

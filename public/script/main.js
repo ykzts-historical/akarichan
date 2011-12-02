@@ -1,5 +1,5 @@
-(function(win, doc) {
-  "use strict";
+(function(window, document, location) {
+  'use strict';
 
   var HOST = location.host;
   var URI = location.href;
@@ -14,16 +14,13 @@
   };
 
   function SiteScript() {
-    this.sections = new Sections(this);
     this.ap = new AppendPage(this);
     this.form = new Form(this);
     this.ka = new KeyboardAction(this);
     this.add_event();
-    this.set_elevator();
   }
-
   (function($) {
-    var _page_title_node = doc.querySelector('head title');
+    var _page_title_node = document.querySelector('head title');
 
     Object.defineProperties($, {
       page_title: {
@@ -31,7 +28,7 @@
           return _page_title_node.textContent;
         },
         set: function(title) {
-          var text_node = doc.createTextNode(title);
+          var text_node = document.createTextNode(title);
           _page_title_node.replaceChild(text_node, _page_title_node.firstChild);
           return title;
         }
@@ -39,7 +36,7 @@
 
       message: {
         get: function() {
-          return doc.getElementById('message');
+          return document.getElementById('message');
         },
         set: function(message) {
           var _message_node = this.message;
@@ -53,7 +50,7 @@
           if (message.nodeType) {
             _message_node.parentNode.replaceChild(message, _message_node);
           } else if (typeof message === 'string') {
-            var text_node = doc.createTextNode(message);
+            var text_node = document.createTextNode(message);
             if (_message_node.firstChild) {
               _message_node.replaceChild(text_node, _message_node.firstChild);
             } else {
@@ -66,8 +63,8 @@
     });
 
     $.add_event = function()  {
-      win.addEventListener('keypress', this.onkeypress.bind(this), false);
-      win.addEventListener('popstate', this.onpopstate.bind(this), false);
+      window.addEventListener('keypress', this.onkeypress.bind(this), false);
+      window.addEventListener('popstate', this.onpopstate.bind(this), false);
     };
 
     $.onkeypress = function(event) {
@@ -86,8 +83,8 @@
       var state = event.state;
       if (!state || this.ap.uri === state.uri)
         return;
-      win.scroll(0, 0);
-      this.sections.refresh();
+      window.scroll(0, 0);
+      this.ap.refresh();
       this.ap.uri = URI = state.uri;
       this.ap.request();
       if (this.form.text_field.value !== this.ap.username)
@@ -95,38 +92,20 @@
     };
 
     $.create_message_node = function() {
-      var _message_node = doc.createElement('p');
+      var _message_node = document.createElement('p');
       var selector = [
         'section:last-of-type',
         'body > h1'
       ].join(', ');
-      var point = doc.querySelector(selector);
+      var point = document.querySelector(selector);
       _message_node.setAttribute('id', 'message');
       point.insertAdjacentElement('afterEnd', _message_node);
       return _message_node;
     };
-
-    $.set_elevator = function() {
-      var ka = this.ka;
-      var list_node = doc.createElement('ul');
-      var point = doc.querySelector('body > fieldset');
-      list_node.setAttribute('id', 'elevator');
-      ['prev', 'next'].forEach(function(value) {
-        var list_item = doc.createElement('li');
-        list_node.appendChild(list_item);
-        list_item.classList.add(value);
-        list_item.addEventListener('click', function() {
-          ka[value]();
-        }, false);
-      });
-      point.insertAdjacentElement('beforeBegin', list_node);
-    };
   })(SiteScript.prototype);
 
   function Form(ss) {
-    this.form = doc.querySelector('body > fieldset form');
-    this.text_field = doc.getElementById('tumblr_username');
-    this.sections = ss.sections;
+    this.text_field = document.getElementById('tumblr_username');
     this.ap = ss.ap;
     this.init();
   }
@@ -143,17 +122,17 @@
     };
 
     $.add_event = function() {
-      win.addEventListener('scroll', this.onscroll.bind(this), false);
+      window.addEventListener('scroll', this.onscroll.bind(this), false);
       this.text_field.addEventListener('focus', this.onfocus, false);
       this.text_field.addEventListener('blur', this.onfocus, false);
-      this.form.addEventListener('submit', this.onsubmit.bind(this), false);
+      this.text_field.form.addEventListener('submit', this.onsubmit.bind(this), false);
       this.onscroll();
     };
 
     $.onscroll = function() {
       if (this.ap.username !== '_dashboard')
         return;
-      var current = this.sections.current_section();
+      var current = this.ap.current_section();
       if (!current)
         return;
       var blog_name = current.querySelector('.blog_name').textContent;
@@ -165,7 +144,7 @@
       if (!this.text_field.value)
         return false;
       this.text_field.blur();
-      this.sections.refresh();
+      this.ap.refresh();
       this.ap.username = this.text_field.value;
       this.ap.page = 1;
       this.ap.request();
@@ -190,42 +169,41 @@
 
   function KeyboardAction(ss) {
     this.ap = ss.ap;
-    this.sections = ss.sections;
     this.form = ss.form;
   }
 
   (function($) {
     $.reload = function() {
-      this.sections.refresh();
+      this.ap.refresh();
       this.ap.request();
     };
 
     $.next = function() {
-      var current = this.sections.current_section();
-      this.sections.next(current);
+      var current = this.ap.current_section();
+      this.ap.next(current);
     };
 
     $.prev = function() {
-      var current = this.sections.current_section();
-      this.sections.prev(current);
+      var current = this.ap.current_section();
+      this.ap.prev(current);
     };
 
     $.pinned = function() {
-      var current = this.sections.current_section();
-      this.sections.set_pin(current);
+      var current = this.ap.current_section();
+      this.ap.set_pin(current);
     };
 
     $.open = function() {
-      var current = this.sections.current_section();
-      var pinned = doc.querySelectorAll('.pinned');
-      var sections = Array.prototype.slice.apply(pinned);
+      var current = this.ap.current_section();
+      var pinned = document.querySelectorAll('.pinned');
+      var sections = toArray(pinned);
       if (!sections.length) {
-        this.sections.open(current);
+        this.ap.open(current);
         return;
       }
       sections.forEach(function(section) {
-        this.sections.open(section);
-        this.sections.set_pin(section);
+        this.ap.open(section);
+        this.ap.set_pin(section);
       }, this);
     };
 
@@ -234,7 +212,7 @@
     };
 
     $.reblog = function() {
-      var current = this.sections.current_section();
+      var current = this.ap.current_section();
       var uri = current.querySelector('form').getAttribute('action');
       var req = new XMLHttpRequest();
       req.addEventListener('readystatechange', function() {
@@ -258,13 +236,12 @@
 
   function AppendPage(ss) {
     this.ss = ss;
-    this.sections = ss.sections;
     this.uri = URI;
     this.init();
   }
 
   (function($) {
-    var _expr = /(?:(?:http:\/\/[^/]+)?\/([\w-\.]+)?(?:\?page=(\d+))?)?/;
+    var _expr = /(?:(?:http:\/\/[^/]+)?\/([^\?]+)?(?:\?page=(\d+))?)?/;
 
     Object.defineProperties($, {
       username: {
@@ -272,18 +249,23 @@
           return _expr.exec(this.uri)[1];
         },
         set: function(username) {
-          this.uri = this.get_api_uri(username, this.page);
+          this.uri = this.get_page_uri({username: username});
           return username;
         }
       },
-
       page: {
         get: function() {
           return (_expr.exec(this.uri)[2] || 1) * 1;
         },
         set: function(page) {
-          this.uri = this.get_api_uri(this.username, page);
+          this.uri = this.get_page_uri({page: page});
           return page;
+        }
+      },
+      sections: {
+        get: function() {
+          var sections = document.querySelectorAll('body > section');
+          return toArray(sections);
         }
       }
     });
@@ -295,21 +277,21 @@
 
     $.add_event = function() {
       var self = this;
-      win.addEventListener('scroll', function onscroll() {
+      window.addEventListener('scroll', function onscroll() {
         self.window_scroll(function() {
-          win.removeEventListener('scroll', onscroll);
+          window.removeEventListener('scroll', onscroll);
         });
       }, false);
     };
 
     $.window_scroll = function(remove_event) {
-      var sections = this.sections.nodes;
+      var sections = this.sections;
       var len = sections.length;
       if (len === 0) {
         remove_event();
         return;
       }
-      if (win.scrollY < sections[len-2].offsetTop)
+      if (window.scrollY < sections[len-2].offsetTop)
         return;
       remove_event();
       this.load_next();
@@ -329,7 +311,7 @@
       var self = this;
       if (this.uri !== URI) {
         URI = this.uri;
-        win.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
+        window.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
       }
       this.ss.message = 'loading...';
       var req = new XMLHttpRequest();
@@ -346,46 +328,28 @@
 
     $.append = function(res) {
       var df = res.createDocumentFragment();
-      var sections = Array.prototype.slice.apply(
-        res.querySelectorAll('body > section, #message'));
-      sections.forEach(df.appendChild, df);
-      this.ss.message = doc.importNode(df, true);
+      var sections = res.querySelectorAll('body > section, #message');
+      toArray(sections).forEach(df.appendChild, df);
+      this.ss.message = document.importNode(df, true);
       this.ss.page_title = res.querySelector('head title').textContent;
     };
 
-    $.get_api_uri = function(username, page) {
-      var path = '/' + username;
-      if (page > 1)
-        path += '?page=' + page;
-      return 'http://' + HOST + path;
+    $.get_page_uri = function(options) {
+      return this.uri.replace(_expr, function(_, username, page) {
+        if (options.username)
+          username = options.username;
+        if (options.page)
+          page = options.page;
+        var path = '/' + username;
+        if (page > 1)
+          path += '?page=' + page;
+        return 'http://' + HOST + path;
+      });
     };
-  })(AppendPage.prototype);
-
-  function Sections(ss) {
-    this.ss = ss;
-  }
-
-  (function($) {
-    Object.defineProperties($, {
-      nodes: {
-        get: function() {
-          var sections = doc.querySelectorAll('body > section');
-          return Array.prototype.slice.apply(sections);
-        }
-      },
-
-      positions: {
-        get: function() {
-          return this.nodes.map(function(section) {
-            return section.offsetTop;
-          });
-        }
-      }
-    });
 
     $.refresh = function() {
-      var range = doc.createRange();
-      var sections = this.nodes;
+      var range = document.createRange();
+      var sections = this.sections;
       var len = sections.length;
       if (!len)
         return;
@@ -397,8 +361,8 @@
 
     $.open = function(section) {
       var anchor = section.querySelector('a.uri');
-      var event = doc.createEvent('MouseEvent');
-      event.initMouseEvent('click', true, true, win,
+      var event = document.createEvent('MouseEvent');
+      event.initMouseEvent('click', true, true, window,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
       anchor.dispatchEvent(event);
     };
@@ -408,8 +372,8 @@
     };
 
     $.current_section = function() {
-      var pos = win.scrollY;
-      var sections = this.nodes;
+      var pos = window.scrollY;
+      var sections = this.sections;
       if (!sections.length)
         return null;
       return sections.reduceRight(function(prev, current) {
@@ -419,14 +383,16 @@
     };
 
     $.go = function(section, num) {
-      var sections = this.nodes;
-      var positions = this.positions;
+      var sections = this.sections;
+      var positions = sections.map(function(section) {
+        return section.offsetTop;
+      });
       var len = sections.length;
       var i = positions.indexOf(section.offsetTop);
       i = i + num;
       if (i < 0 || i > len - 1)
         return -1;
-      win.scroll(0, positions[i]);
+      window.scroll(0, positions[i]);
       return sections[i];
     };
 
@@ -437,9 +403,13 @@
     $.next = function(section) {
       return this.go(section, +1);
     };
-  })(Sections.prototype);
+  })(AppendPage.prototype);
 
-  doc.addEventListener('DOMContentLoaded', function() {
-    win.ss = new SiteScript();
+  document.addEventListener('DOMContentLoaded', function() {
+    window.ss = new SiteScript();
   }, false);
-})(window, window.document);
+
+  function toArray(obj) {
+    return Array.prototype.slice.apply(obj);
+  }
+})(window, window.document, window.location);
