@@ -63,5 +63,8 @@ function get_access_token(req, res) {
 }
 
 function init_tumblr() {
-  return new Tumblr(settings.TUMBLR.CONSUMER_KEY, settings.TUMBLR.SECRET_KEY);
+  return new Tumblr({
+    consumer_key: settings.TUMBLR.CONSUMER_KEY,
+    secret_key: settings.TUMBLR.SECRET_KEY
+  });
 }
