@@ -15,16 +15,7 @@
   <body>
     <h1><%= get_title() %></h1>
 <%- body %>
-    <fieldset>
-      <legend><label for="tumblr_username">Form</label></legend>
-      <form action="/post-method" method="POST">
-        <fieldset>
-          <legend><label for="tumblr_username">Tumblr username</label></legend>
-          <input type="text" value="<%= username %>" id="tumblr_username" name="tumblr_username" />
-        </fieldset>
-        <input type="submit" value="submit" />
-      </form>
-    </fieldset>
+<%- partial('fieldset') %>
     <script type="application/javascript" src="<%= settings.STATIC_URI %>/script/dummy.js"></script>
     <script type="application/javascript" src="<%= settings.STATIC_URI %>/script/main.js"></script>
   </body>

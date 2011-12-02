@@ -1,9 +1,12 @@
 @charset "utf-8";
 
 *, * * {
-  line-height: 1em;
   margin: 0;
   padding: 0;
+
+  border: 0;
+
+  line-height: 1;
 }
 
 html {
@@ -60,17 +63,15 @@ body > fieldset {
 
   width: 100%;
 
+  border-bottom: thin solid gray;
+
   background-color: rgba(192, 192, 192, .6);
 
   text-align: center;
 }
 
-body > fieldset fieldset {
-  border: none;
-}
-
 body > fieldset legend,
-body > fieldset input[type="submit"] {
+body > fieldset menu {
   display: none;
 }
 
