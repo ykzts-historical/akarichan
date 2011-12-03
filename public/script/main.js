@@ -217,13 +217,8 @@
       if (!form)
         return;
       var uri = form.getAttribute('action');
-      var query = [];
       var req = new XMLHttpRequest();
-      var form_data = new FormData();
-      toArray(form.elements).forEach(function(element) {
-        if (element.name && element.value)
-          form_data.append(element.name, element.value);
-      });
+      var form_data = new FormData(form);
       req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4 || req.status !== 200)
           return;
