@@ -25,6 +25,7 @@ html {
 }
 
 body {
+  margin-bottom: 3em;
 }
 
 body > h1,
@@ -121,14 +122,9 @@ body > fieldset fieldset input[type="text"] {
 }
 
 body > fieldset:hover input[type="text"],
-body > fieldset:not(:hover) input[type="text"]:focus {
+body > fieldset input[type="text"]:focus {
   background-color: rgb(255, 255, 255);
   color: black;
-}
-
-body > fieldset input.initial_value,
-body > fieldset:hover input.initial_value {
-  color: gray;
 }
 
 body > fieldset menu {

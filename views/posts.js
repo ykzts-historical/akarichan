@@ -5,7 +5,8 @@ var settings = require('../settings');
 var views = require('./index');
 
 exports.index = function(req, res) {
-  var oauth = req.session.oauth || {};
+  var session = req.session;
+  var oauth = session.oauth || {};
   var blog_url = req.session.blog_url || null;
   var username = req.params.username || false;
   var hostname = req.params.hostname || false;

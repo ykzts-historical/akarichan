@@ -111,20 +111,13 @@
   }
 
   (function($) {
-    var default_value = 'press any tumblr username';
-
     $.init = function() {
-      if (!this.text_field.value) {
-        this.text_field.value = default_value;
-        this.text_field.classList.add('initial_value');
-      }
       this.add_event();
     };
 
     $.add_event = function() {
       window.addEventListener('scroll', this.onscroll.bind(this), false);
       this.text_field.addEventListener('focus', this.onfocus, false);
-      this.text_field.addEventListener('blur', this.onfocus, false);
       this.text_field.form.addEventListener('submit', this.onsubmit.bind(this), false);
       this.onscroll();
     };
@@ -151,19 +144,10 @@
       return false;
     };
 
-    $.onfocus = function(event) {
-      if (this.value === default_value) {
-        this.value = '';
-        this.classList.remove('initial_value');
-      } else if (this.value === '') {
-        this.value = default_value;
-        this.classList.add('initial_value');
-      }
-      var len = this.value.length;
-      if (event.type === 'focus' && len) {
-        this.selectionStart = 0;
-        this.selectionEnd = len;
-      }
+    $.onfocus = function() {
+      if (!this.value.length)
+        return;
+      this.select();
     };
   })(Form.prototype);
 
