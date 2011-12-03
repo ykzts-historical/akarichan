@@ -213,8 +213,17 @@
 
     $.reblog = function() {
       var current = this.ap.current_section();
-      var uri = current.querySelector('form').getAttribute('action');
+      var form = current.querySelector('form');
+      if (!form)
+        return;
+      var uri = form.getAttribute('action');
+      var query = [];
       var req = new XMLHttpRequest();
+      var form_data = new FormData();
+      toArray(form.elements).forEach(function(element) {
+        if (element.name && element.value)
+          form_data.append(element.name, element.value);
+      });
       req.addEventListener('readystatechange', function() {
         if (req.readyState !== 4 || req.status !== 200)
           return;
@@ -229,8 +238,8 @@
             break;
         }
       });
-      req.open('GET', uri);
-      req.send(null);
+      req.open('POST', uri);
+      req.send(form_data);
     };
   })(KeyboardAction.prototype);
 

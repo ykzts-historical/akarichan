@@ -56,10 +56,16 @@ app.configure('development', function() {
 });
 
 app.configure('production', 'development', function() {
+  app.use(express.csrf());
   app.use(app.router);
 });
 
 app.helpers(helpers);
+app.dynamicHelpers({
+  session: function(req, res) {
+    return req.session;
+  }
+});
 
 routes.forEach(function(route) {
   var path = route[0];

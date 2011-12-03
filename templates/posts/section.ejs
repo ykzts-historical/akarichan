@@ -11,10 +11,13 @@
             <dt>POST URI</dt>
             <dd><cite><a href="<%= section.uri %>" class="uri"><%= section.uri %></a></cite></dd>
           </dl>
-          <form action="/_reblog/<%= section.id %>?reblog_key=<%= section.reblog_key %>" method="GET">
+<% if (session.userinfo) { %>
+          <form action="/_reblog/<%= section.id %>" method="POST">
             <input type="hidden" name="reblog_key" value="<%= section.reblog_key %>" />
+            <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
             <p><button type="submit">REBLOG</button></p>
           </form>
+<% } %>
         </figcaption>
       </figure>
     </section>

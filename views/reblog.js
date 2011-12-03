@@ -1,4 +1,3 @@
-
 var url = require('url');
 var tumblr = require('../lib/tumblr');
 var settings = require('../settings');
@@ -6,7 +5,7 @@ var settings = require('../settings');
 exports.index = function(req, res) {
   var session = req.session;
   var id = req.params.id;
-  var reblog_key = req.query.reblog_key;
+  var reblog_key = req.body.reblog_key;
   var options = {
     protocol: 'reblog:',
     consumer_key: settings.TUMBLR.CONSUMER_KEY,
