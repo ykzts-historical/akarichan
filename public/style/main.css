@@ -1,67 +1,123 @@
 @charset "utf-8";
 
-*, * * {
+* {
   margin: 0;
   padding: 0;
-
   border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 1em;
+  line-heigth: 1;
 }
 
 *::before, *::after {
   display: none;
+  content: "";
 }
 
 html {
-  background-size: 10px 10px;
+  width: 100%;
+  background-size: 10px;
   background-color: silver;
-  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
-  background-image: -moz-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
-  background-image: -o-linear-gradient(left, rgba(255, 255, 255, .2) 50%, transparent 50%);
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, .5) 30%, transparent 30%);
+  background-image: -moz-linear-gradient(left, rgba(255, 255, 255, .5) 30%, transparent 30%);
+  background-image: -o-linear-gradient(left, rgba(255, 255, 255, .5) 30%, transparent 30%);
 }
 
 body {
-  margin: 0;
 }
 
-body > h1 {
+body > h1,
+body > section > h1,
+fieldset > legend {
   display: none;
 }
 
-body > fieldset {
-  display: block;
-  z-index: 11000;
+/* SECTION */
+body > section {
+  margin-bottom: 1em;
+  padding-top: 2em;
+}
 
-  position: fixed;
-  top: 0;
-  right: 0;
-
-  width: 100%;
-
-  border-bottom: thin solid gray;
-
-  background-color: rgba(192, 192, 192, .6);
-
+figure {
   text-align: center;
 }
 
-body > fieldset legend,
-body > fieldset menu {
+figure > q {
+  display: inline-block;
+  max-width: 95%;
+}
+
+body > section.pinned figure > q::before,
+body > section.reblogged figure > q::before {
+  display: block;
+  content: "";
+  position: relative;
+  top: 1em;
+  width: 1em;
+  height: 1em;
+  margin-top: -1em;
+  background-image: -webkit-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+  background-image: -moz-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+  background-image: -o-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
+  font-size: 3em;
+}
+
+figure > q img {
+  max-width: 100%;
+  min-width: 50px;
+  min-height: 50px;
+  box-shadow: .4em .4em .4em gray;
+  border: thin solid gray;
+  background-color: white;
+}
+
+figure figcaption {
   display: none;
 }
 
-body > fieldset input[type="text"] {
+/* MESSAGE */
+#message {
   width: 95%;
+  margin: 1em auto 1em;
+  border: thin solid black;
+  border-radius: .3em;
+  background-color: white;
+  font-size: 1.5em;
+  text-indent: .5em;
+}
 
+#message a {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: black;
+  text-decoration: none;
+  text-align: center;
+}
+
+/* FIELDSET */
+body > fieldset {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  border-top: thin solid gray;
+  background-color: rgba(192, 192, 192, .6);
+  font-size: 1.5em;
+}
+
+body > fieldset fieldset {
   margin: .15em;
-  padding-left: .3em;
+}
 
+body > fieldset fieldset input[type="text"] {
+  display: block;
+  width: 100%;
   border: thin solid black;
   border-radius: .15em;
-
   background-color: rgba(255, 255, 255, .6);
-
   color: gray;
-  font-size: 2em;
+  text-indent: .3em;
 }
 
 body > fieldset:hover input[type="text"],
@@ -75,82 +131,6 @@ body > fieldset:hover input.initial_value {
   color: gray;
 }
 
-body > section {
-  width: 100%;
-
-  margin: 0;
-  padding-top: 4em;
-}
-
-body > section h1 {
+body > fieldset menu {
   display: none;
-}
-
-body > section figure > q {
-  display: block;
-
-  max-width: 90%;
-  min-width: 50px;
-  min-height: 50px;
-
-  margin: 0 auto;
-
-  border: thin solid gray;
-  box-shadow: .4em .4em .4em gray;
-
-  background-color: white;
-}
-
-body > section.pinned figure > q::before,
-body > section.reblogged figure > q::before {
-  display: block;
-  content: "";
-
-  position: relative;
-  top: 1em;
-
-  width: 1em;
-  height: 1em;
-
-  margin-top: -1em;
-
-  background-image: -webkit-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
-  background-image: -moz-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
-  background-image: -o-linear-gradient(top left, rgba(255, 255, 0, .5) 50%, transparent 50%);
-
-  font-size: 3em;
-}
-
-body > section q img {
-  display: block;
-  width: 100%;
-}
-
-body > section figcaption {
-  display: none;
-}
-
-#message {
-  width: 95%;
-
-  margin: 3em auto 1em;
-  padding: .3em;
-
-  border: thin solid black;
-  border-radius: .3em;
-
-  background-color: white;
-
-  font-size: 2em;
-}
-
-#message a {
-  display: block;
-
-  margin: 0;
-  padding: 0;
-
-  color: black;
-  text-decoration: none;
-  text-align: center;
 }
