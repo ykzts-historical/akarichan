@@ -68,10 +68,13 @@ app.dynamicHelpers({
 });
 
 routes.forEach(function(route) {
-  var path = route[0];
-  var callback = route[1];
-  app.get(path, callback);
-  app.post(path, callback);
+  var methods = route[0] instanceof Array ?
+    route[0]: [route[0]];
+  var path = route[1];
+  var callback = route[2];
+  methods.forEach(function(method) {
+    app[method.toLowerCase()](path, callback);
+  });
 });
 
 if (require.main === module)

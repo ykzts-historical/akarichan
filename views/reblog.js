@@ -14,7 +14,7 @@ exports.index = function(req, res) {
     reblog_key: reblog_key
   };
 
-  if (!(session.oauth && session.userinfo)) {
+  if (!(session.oauth && session.user)) {
     res.redirect('/_oauth/signin?back=' + encodeURIComponent(req.url));
     return;
   };

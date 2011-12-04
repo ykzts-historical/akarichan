@@ -1,0 +1,15 @@
+    <fieldset id="settings">
+      <form action="/_settings" method="POST">
+        <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
+        <fieldset>
+          <legend for="blog_url">BLOG URL</legend>
+          <select name="blog_url" id="blog_url">
+<% session.user.blogs.forEach(function(blog) {
+     var blog_url = blog.url; %>
+            <option value="<%= blog_url %>"<% if (blog_url === session.blog_url){ %> selected="selected"<% } %>><%= blog_url %></option>
+<% }); %>
+          </select>
+        </fieldset>
+        <p><button value="submit">submit</button></p>
+      </form>
+    </fieldset>

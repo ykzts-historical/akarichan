@@ -2,13 +2,14 @@
 <%- partial('fieldset') %>
       <nav>
         <ul>
-<% if (session.userinfo) { %>
+<% if (session.user) { %>
 <%   if (username !== '_dashboard') { %>
           <li><a href="/_dashboard">Dashboard</a></li>
 <%   } %>
-          <li><a href="/_oauth/signout">signout</a></li>
+          <li><a href="/_settings">Settings</a></li>
+          <li><a href="/_oauth/signout">Sign out</a></li>
 <% } else { %>
-          <li><a href="/_oauth/signin">signin</a></li>
+          <li><a href="/_oauth/signin">Sign in</a></li>
 <% } %>
         </ul>
       </nav>

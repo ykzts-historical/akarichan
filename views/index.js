@@ -4,7 +4,7 @@ var path = require('path');
 var settings = require('../settings');
 
 exports.index = function(req, res) {
-  if (!req.session.userinfo) {
+  if (!req.session.user) {
     res.render('index');
   } else {
     res.redirect('/_dashboard');

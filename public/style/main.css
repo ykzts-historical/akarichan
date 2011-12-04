@@ -28,9 +28,7 @@ body {
   margin-bottom: 3em;
 }
 
-body > h1,
-article > h1,
-fieldset > legend {
+body > h1 {
   display: none;
 }
 
@@ -38,6 +36,10 @@ fieldset > legend {
 article {
   margin-bottom: 1em;
   padding-top: 2em;
+}
+
+article h1 {
+  display: none;
 }
 
 figure {
@@ -77,6 +79,61 @@ figure figcaption {
   display: none;
 }
 
+/* SETTINGS */
+fieldset#settings fieldset {
+  width: 95%;
+  margin: 1em auto;
+  border: thin solid gray;
+  background-color: white;
+}
+
+fieldset#settings fieldset ~ fieldset {
+  border-top: 0;
+}
+
+fieldset#settings fieldset:first-of-type {
+  padding-top: .6em;
+  border-radius: .6em .6em 0 0;
+}
+
+fieldset#settings fieldset:last-of-type {
+  padding-bottom: .6em;
+  border-radius: 0 0 .6em .6em;
+}
+
+fieldset#settings fieldset:only-of-type {
+  padding-top: .6em;
+  padding-bottom: .6em;
+  border-radius: .6em;
+}
+
+fieldset#settings fieldset legend {
+  float: left;
+  margin: 0 1em;
+}
+
+fieldset#settings fieldset select {
+  float: right;
+  margin: 0 1em;
+}
+
+fieldset#settings fieldset select::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+fieldset#settings p {
+  text-align: center;
+}
+
+fieldset#settings p button {
+  padding: .3em 1em;
+  border: thin solid gray;
+  border-radius: .6em;
+  background-color: silver;
+}
+
 /* MESSAGE */
 #message {
   width: 95%;
@@ -109,6 +166,10 @@ footer {
 /* FIELDSET */
 footer > fieldset {
   font-size: 1.5em;
+}
+
+footer > fieldset legend {
+  display: none;
 }
 
 footer > fieldset fieldset {

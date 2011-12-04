@@ -11,7 +11,7 @@
             <dt>POST URI</dt>
             <dd><cite><a href="<%= article.uri %>" class="uri"><%= article.uri %></a></cite></dd>
           </dl>
-<% if (session.userinfo) { %>
+<% if (session.user) { %>
           <form action="/_reblog/<%= article.id %>" method="POST">
             <input type="hidden" name="reblog_key" value="<%= article.reblog_key %>" />
             <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
