@@ -9,6 +9,6 @@ module.exports = [
   }],
   ['GET', '/_oauth/:action(sign(in|out))', views.oauth.login],
   [['GET', 'POST'], '/_settings', views.settings],
-  ['GET', '/_reblog/:id(\\d+)', views.reblog],
+  [['GET', 'POST'], '/_reblog/:id(\\d+)', views.reblog],
   ['GET', '/(:username([^_][^/.]+|_dashboard)|/:hostname([^_][^/]+))', views.posts]
 ];
