@@ -68,7 +68,7 @@ app.dynamicHelpers({
 });
 
 routes.forEach(function(route) {
-  var methods = route[0] instanceof Array ?
+  var methods = Array.isArray(route[0]) ?
     route[0]: [route[0]];
   var path = route[1];
   var callback = route[2];
