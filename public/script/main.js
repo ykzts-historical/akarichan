@@ -197,28 +197,7 @@
 
     $.reblog = function() {
       var current = this.ap.current_article();
-      var form = current.querySelector('form');
-      if (!form)
-        return;
-      var uri = form.getAttribute('action');
-      var req = new XMLHttpRequest();
-      var form_data = new FormData(form);
-      req.addEventListener('readystatechange', function() {
-        if (req.readyState !== 4 || req.status !== 200)
-          return;
-        var res = JSON.parse(req.responseText);
-        switch (res.meta.status) {
-          case 201:
-            current.classList.add('reblogged');
-            break;
-          default:
-            var errors = res.response.errors || [];
-            alert(errors[0]);
-            break;
-        }
-      });
-      req.open('POST', uri);
-      req.send(form_data);
+      this.ap.reblog(current);
     };
   })(KeyboardAction.prototype);
 
@@ -357,6 +336,31 @@
 
     $.set_pin = function(article) {
       article.classList.toggle('pinned');
+    };
+
+    $.reblog = function(article) {
+      var form = article.querySelector('form');
+      if (!form)
+        return;
+      var uri = form.getAttribute('action');
+      var req = new XMLHttpRequest();
+      var form_data = new FormData(form);
+      req.addEventListener('readystatechange', function() {
+        if (req.readyState !== 4 || req.status !== 200)
+          return;
+        var res = JSON.parse(req.responseText);
+        switch (res.meta.status) {
+          case 201:
+            article.classList.add('reblogged');
+            break;
+          default:
+            var errors = res.response.errors || [];
+            alert(errors[0]);
+            break;
+        }
+      });
+      req.open('POST', uri);
+      req.send(form_data);
     };
 
     $.current_article = function() {
