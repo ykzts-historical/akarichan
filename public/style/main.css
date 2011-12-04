@@ -29,13 +29,13 @@ body {
 }
 
 body > h1,
-body > section > h1,
+article > h1,
 fieldset > legend {
   display: none;
 }
 
-/* SECTION */
-body > section {
+/* ARTICLE */
+article {
   margin-bottom: 1em;
   padding-top: 2em;
 }
@@ -49,8 +49,8 @@ figure > q {
   max-width: 95%;
 }
 
-body > section.pinned figure > q::before,
-body > section.reblogged figure > q::before {
+.pinned figure > q::before,
+.reblogged figure > q::before {
   display: block;
   content: "";
   position: relative;
@@ -97,21 +97,25 @@ figure figcaption {
   text-align: center;
 }
 
-/* FIELDSET */
-body > fieldset {
+/* FOOTER */
+footer {
   position: fixed;
   bottom: 0;
   width: 100%;
   border-top: thin solid gray;
   background-color: rgba(192, 192, 192, .6);
+}
+
+/* FIELDSET */
+footer > fieldset {
   font-size: 1.5em;
 }
 
-body > fieldset fieldset {
+footer > fieldset fieldset {
   margin: .15em;
 }
 
-body > fieldset fieldset input[type="text"] {
+footer > fieldset fieldset input[type="text"] {
   display: block;
   width: 100%;
   border: thin solid black;
@@ -121,12 +125,47 @@ body > fieldset fieldset input[type="text"] {
   text-indent: .3em;
 }
 
-body > fieldset:hover input[type="text"],
-body > fieldset input[type="text"]:focus {
+footer > fieldset:hover input[type="text"],
+footer > fieldset input[type="text"]:focus {
   background-color: rgb(255, 255, 255);
   color: black;
 }
 
-body > fieldset menu {
+footer > fieldset menu {
   display: none;
+}
+
+/* NAVIGATION */
+footer nav {
+  display: none;
+  padding-right: 1em;
+  background-color: rgba(0, 0, 0, .6);
+  color: white;
+  font-size: .8em;
+}
+
+footer:hover nav {
+  display: block;
+}
+
+footer nav ul {
+  text-align: right;
+}
+
+footer nav ul li {
+  display: inline;
+}
+
+footer nav li ~ li::before {
+  display: inline;
+  content: " | ";
+}
+
+footer nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer nav a:hover {
+  text-decoration: underline;
 }

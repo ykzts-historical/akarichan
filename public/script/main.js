@@ -94,7 +94,7 @@
     $.create_message_node = function() {
       var _message_node = document.createElement('p');
       var selector = [
-        'section:last-of-type',
+        'article:last-of-type',
         'body > h1'
       ].join(', ');
       var point = document.querySelector(selector);
@@ -125,7 +125,7 @@
     $.onscroll = function() {
       if (this.ap.username !== '_dashboard')
         return;
-      var current = this.ap.current_section();
+      var current = this.ap.current_article();
       if (!current)
         return;
       var blog_name = current.querySelector('.blog_name').textContent;
@@ -163,31 +163,31 @@
     };
 
     $.next = function() {
-      var current = this.ap.current_section();
+      var current = this.ap.current_article();
       this.ap.next(current);
     };
 
     $.prev = function() {
-      var current = this.ap.current_section();
+      var current = this.ap.current_article();
       this.ap.prev(current);
     };
 
     $.pinned = function() {
-      var current = this.ap.current_section();
+      var current = this.ap.current_article();
       this.ap.set_pin(current);
     };
 
     $.open = function() {
-      var current = this.ap.current_section();
-      var pinned = document.querySelectorAll('.pinned');
-      var sections = toArray(pinned);
-      if (!sections.length) {
+      var current = this.ap.current_article();
+      var pinned = document.getElementsByClassName('pinned');
+      var articles = toArray(pinned);
+      if (!articles.length) {
         this.ap.open(current);
         return;
       }
-      sections.forEach(function(section) {
-        this.ap.open(section);
-        this.ap.set_pin(section);
+      articles.forEach(function(article) {
+        this.ap.open(article);
+        this.ap.set_pin(article);
       }, this);
     };
 
@@ -196,7 +196,7 @@
     };
 
     $.reblog = function() {
-      var current = this.ap.current_section();
+      var current = this.ap.current_article();
       var form = current.querySelector('form');
       if (!form)
         return;
@@ -250,10 +250,10 @@
           return page;
         }
       },
-      sections: {
+      articles: {
         get: function() {
-          var sections = document.querySelectorAll('body > section');
-          return toArray(sections);
+          var articles = document.querySelectorAll('body > article');
+          return toArray(articles);
         }
       }
     });
@@ -273,13 +273,13 @@
     };
 
     $.window_scroll = function(remove_event) {
-      var sections = this.sections;
-      var len = sections.length;
+      var articles = this.articles;
+      var len = articles.length;
       if (len === 0) {
         remove_event();
         return;
       }
-      if (window.scrollY < sections[len-2].offsetTop)
+      if (window.scrollY < articles[len-2].offsetTop)
         return;
       remove_event();
       this.load_next();
@@ -316,8 +316,8 @@
 
     $.append = function(res) {
       var df = res.createDocumentFragment();
-      var sections = res.querySelectorAll('body > section, #message');
-      toArray(sections).forEach(df.appendChild, df);
+      var articles = res.querySelectorAll('body > article, #message');
+      toArray(articles).forEach(df.appendChild, df);
       this.ss.message = document.importNode(df, true);
       this.ss.page_title = res.querySelector('head title').textContent;
     };
@@ -337,59 +337,59 @@
 
     $.refresh = function() {
       var range = document.createRange();
-      var sections = this.sections;
-      var len = sections.length;
+      var articles = this.articles;
+      var len = articles.length;
       if (!len)
         return;
-      range.setStartBefore(sections[0]);
-      range.setEndAfter(sections[len-1]);
+      range.setStartBefore(articles[0]);
+      range.setEndAfter(articles[len-1]);
       range.deleteContents();
       this.ss.message = null;
     };
 
-    $.open = function(section) {
-      var anchor = section.querySelector('a.uri');
+    $.open = function(article) {
+      var anchor = article.querySelector('a.uri');
       var event = document.createEvent('MouseEvent');
       event.initMouseEvent('click', true, true, window,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
       anchor.dispatchEvent(event);
     };
 
-    $.set_pin = function(section) {
-      section.classList.toggle('pinned');
+    $.set_pin = function(article) {
+      article.classList.toggle('pinned');
     };
 
-    $.current_section = function() {
+    $.current_article = function() {
       var pos = window.scrollY;
-      var sections = this.sections;
-      if (!sections.length)
+      var articles = this.articles;
+      if (!articles.length)
         return null;
-      return sections.reduceRight(function(prev, current) {
+      return articles.reduceRight(function(prev, current) {
         return prev.offsetTop - pos <= 0 ?
           prev : current;
       });
     };
 
-    $.go = function(section, num) {
-      var sections = this.sections;
-      var positions = sections.map(function(section) {
-        return section.offsetTop;
+    $.go = function(article, num) {
+      var articles = this.articles;
+      var positions = articles.map(function(article) {
+        return article.offsetTop;
       });
-      var len = sections.length;
-      var i = positions.indexOf(section.offsetTop);
+      var len = articles.length;
+      var i = positions.indexOf(article.offsetTop);
       i = i + num;
       if (i < 0 || i > len - 1)
         return -1;
       window.scroll(0, positions[i]);
-      return sections[i];
+      return articles[i];
     };
 
-    $.prev = function(section) {
-      return this.go(section, -1);
+    $.prev = function(article) {
+      return this.go(article, -1);
     };
 
-    $.next = function(section) {
-      return this.go(section, +1);
+    $.next = function(article) {
+      return this.go(article, +1);
     };
   })(AppendPage.prototype);
 

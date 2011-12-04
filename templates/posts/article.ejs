@@ -1,0 +1,23 @@
+    <article id="id-<%= article.id %>"<% if (article.reblogged) { %> class="reblogged"<% } %>>
+      <h1><a href="#id-<%= article.id %>">ID: <%= article.id %></a></h1>
+      <figure>
+        <q><img src="<%= article.photo_uri %>" /></q>
+        <figcaption>
+          <dl>
+            <dt>Blog Name</dt>
+            <dd class="blog_name"><%= article.blog_name %></dd>
+            <dt>Date</dt>
+            <dd><time datetime="<%= article.date.toISOString() %>"><%= article.date %></time></dd>
+            <dt>POST URI</dt>
+            <dd><cite><a href="<%= article.uri %>" class="uri"><%= article.uri %></a></cite></dd>
+          </dl>
+<% if (session.userinfo) { %>
+          <form action="/_reblog/<%= article.id %>" method="POST">
+            <input type="hidden" name="reblog_key" value="<%= article.reblog_key %>" />
+            <input type="hidden" name="_csrf" value="<%= session._csrf %>" />
+            <p><button type="submit">REBLOG</button></p>
+          </form>
+<% } %>
+        </figcaption>
+      </figure>
+    </article>

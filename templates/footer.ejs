@@ -1,0 +1,15 @@
+    <footer>
+<%- partial('fieldset') %>
+      <nav>
+        <ul>
+<% if (session.userinfo) { %>
+<%   if (username !== '_dashboard') { %>
+          <li><a href="/_dashboard">Dashboard</a></li>
+<%   } %>
+          <li><a href="/_oauth/signout">signout</a></li>
+<% } else { %>
+          <li><a href="/_oauth/signin">signin</a></li>
+<% } %>
+        </ul>
+      </nav>
+    </footer>

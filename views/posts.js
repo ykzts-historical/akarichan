@@ -39,15 +39,15 @@ exports.index = function(req, res) {
   tumblr.request(options, function(tum) {
     tum.on('data', function(data) {
       var posts = data.response.posts || [];
-      var sections = posts.map(utils.section_simplify, {blog_url: blog_url});
-      if (!sections.length) {
+      var articles = posts.map(utils.post_simplify, {blog_url: blog_url});
+      if (!articles.length) {
         tum.emit('error');
         return;
       }
       res.render('posts', {
         username: username || hostname,
         page: page,
-        sections: sections
+        articles: articles
       });
     }).on('error', function(e) {
       views.http404(req, res);
