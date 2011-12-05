@@ -1,9 +1,9 @@
 
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
 
-var os = require('os');
-var cluster = require('cluster');
-var app = require('./app');
+const os = require('os');
+const cluster = require('cluster');
+const app = require('./app');
 
 if (cluster.isMaster) {
   for (var i=0; i<os.cpus().length; i++) {   

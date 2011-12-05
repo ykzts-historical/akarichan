@@ -1,8 +1,8 @@
 
-var tumblr = require('../lib/tumblr');
-var utils = require('../lib/utils');
-var settings = require('../settings');
-var views = require('./index');
+const tumblr = require('../lib/tumblr');
+const utils = require('../lib/utils');
+const settings = require('../settings');
+const views = require('./index');
 
 exports.index = function(req, res) {
   var session = req.session;

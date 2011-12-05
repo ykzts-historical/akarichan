@@ -1,7 +1,7 @@
 
-var fs = require('fs');
-var path = require('path');
-var settings = require('../settings');
+const fs = require('fs');
+const path = require('path');
+const settings = require('../settings');
 
 exports.index = function(req, res) {
   if (!req.session.user) {

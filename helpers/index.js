@@ -1,5 +1,5 @@
 
-var settings = require('../settings');
+const settings = require('../settings');
 
 exports.get_title = function() {
   var title = [];

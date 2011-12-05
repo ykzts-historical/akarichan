@@ -1,5 +1,5 @@
 
-var views = require('../views');
+const views = require('../views');
 
 module.exports = [
   ['GET', '/', views.index],

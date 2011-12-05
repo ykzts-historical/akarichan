@@ -1,6 +1,6 @@
 
-var Tumblr = require('../lib/tumblr').Tumblr;
-var settings = require('../settings');
+const Tumblr = require('../lib/tumblr').Tumblr;
+const settings = require('../settings');
 
 exports.login = function(req, res) {
   var session = req.session;

@@ -1,9 +1,10 @@
 
-var express = require('express');
-var RedisStore = require('connect-redis')(express);
-var helpers = require('./helpers');
-var routes = require('./routes');
-var settings = require('./settings');
+const express = require('express');
+const RedisStore = require('connect-redis')(express);
+const helpers = require('./helpers');
+const routes = require('./routes');
+const settings = require('./settings');
+
 var app = module.exports = express.createServer();
 
 app.configure(function() {
