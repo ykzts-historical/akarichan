@@ -281,16 +281,10 @@
         window.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
       }
       this.ss.message = 'loading...';
-      var req = new XMLHttpRequest();
-      req.addEventListener('readystatechange', function() {
-        if (req.readyState !== 4)
-          return;
-        var res = req.responseXML;
+      xhr({uri: this.uri}, function(res) {
         self.append(res);
         self.add_event();
-      }, false);
-      req.open('GET', this.uri);
-      req.send(null);
+      });
     };
 
     $.append = function(res) {
@@ -342,13 +336,12 @@
       var form = article.querySelector('form');
       if (!form)
         return;
-      var uri = form.getAttribute('action');
-      var req = new XMLHttpRequest();
-      var form_data = new FormData(form);
-      req.addEventListener('readystatechange', function() {
-        if (req.readyState !== 4 || req.status !== 200)
-          return;
-        var res = JSON.parse(req.responseText);
+      var options = {
+        method: 'POST',
+        uri: form.getAttribute('action'),
+        form_data: new FormData(form)
+      };
+      xhr(options, function(res) {
         switch (res.meta.status) {
           case 201:
             article.classList.add('reblogged');
@@ -359,8 +352,6 @@
             break;
         }
       });
-      req.open('POST', uri);
-      req.send(form_data);
     };
 
     $.current_article = function() {
@@ -403,5 +394,18 @@
 
   function toArray(obj) {
     return Array.prototype.slice.apply(obj);
+  }
+
+  function xhr(options, callback) {
+    var req = new XMLHttpRequest();
+    req.addEventListener('readystatechange', function() {
+      if (req.readyState !== 4)
+        return;
+      var res = req.responseXML || JSON.parse(req.responseText);
+      callback(res);
+    }, false);
+    req.open(options.method || 'GET', options.uri);
+    req.send(options.form_data || null);
+    return req;
   }
 })(window, window.document, window.location);
