@@ -198,7 +198,10 @@ footer > fieldset menu {
 
 /* NAVIGATION */
 footer nav {
-  display: none;
+  -webkit-transition: height .3s;
+  -moz-transition: height .3s;
+  -o-transition: height .3s;
+  height: 0;
   padding-right: 1em;
   background-color: rgba(0, 0, 0, .6);
   color: white;
@@ -206,7 +209,7 @@ footer nav {
 }
 
 footer:hover nav {
-  display: block;
+  height: 1.6em;
 }
 
 footer nav ul {
