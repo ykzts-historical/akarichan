@@ -63,8 +63,8 @@
     });
 
     $.add_event = function()  {
-      window.addEventListener('keypress', this.onkeypress.bind(this), false);
-      window.addEventListener('popstate', this.onpopstate.bind(this), false);
+      window.addEventListener('keypress', _e(this), false);
+      window.addEventListener('popstate', _e(this), false);
     };
 
     $.onkeypress = function(event) {
@@ -116,9 +116,9 @@
     };
 
     $.add_event = function() {
-      window.addEventListener('scroll', this.onscroll.bind(this), false);
+      window.addEventListener('scroll', _e(this), false);
       this.text_field.addEventListener('focus', this.onfocus, false);
-      this.text_field.form.addEventListener('submit', this.onsubmit.bind(this), false);
+      this.text_field.form.addEventListener('submit', _e(this), false);
       this.onscroll();
     };
 
@@ -280,19 +280,21 @@
         URI = this.uri;
         window.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
       }
-      this.ss.message = 'loading...';
-      xhr({uri: this.uri}, function(res) {
-        self.append(res);
-        self.add_event();
-      });
+      this.ss.page_title = this.ss.message = 'loading...';
+      xhr.call(this, {uri: this.uri}, this.append);
     };
 
     $.append = function(res) {
+      if (!res.nodeType) {
+        this.ss.page_title = this.ss.message = 'error.';
+        return;
+      }
       var df = res.createDocumentFragment();
       var articles = res.querySelectorAll('body > article, #message');
       toArray(articles).forEach(df.appendChild, df);
       this.ss.message = document.importNode(df, true);
       this.ss.page_title = res.querySelector('head title').textContent;
+      this.add_event();
     };
 
     $.get_page_uri = function(options) {
@@ -396,13 +398,26 @@
     return Array.prototype.slice.apply(obj);
   }
 
+  function _e(self) {
+    return function(event) {
+      self['on' + event.type].call(self, event);
+    };
+  }
+
   function xhr(options, callback) {
+    var self = this;
     var req = new XMLHttpRequest();
     req.addEventListener('readystatechange', function() {
       if (req.readyState !== 4)
         return;
-      var res = req.responseXML || JSON.parse(req.responseText);
-      callback(res);
+      var res = req.responseXML || (function(text) {
+        try {
+          return JSON.parse(text);
+        } catch (e) {
+          return text;
+        }
+      })(req.responseText);
+      callback.call(self, res);
     }, false);
     req.open(options.method || 'GET', options.uri);
     req.send(options.form_data || null);
