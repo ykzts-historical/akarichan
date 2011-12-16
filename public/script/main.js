@@ -267,7 +267,7 @@
     $.load_next = function() {
       if (!this.ss.message)
         return;
-      var anchor = this.ss.message.querySelector('a:only-child');
+      var anchor = this.ss.message.querySelector('a[rel="next"]');
       if (!anchor)
         return;
       this.uri = anchor.getAttribute('href');
