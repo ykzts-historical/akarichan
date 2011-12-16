@@ -97,9 +97,9 @@
         'article:last-of-type',
         'body > h1'
       ].join(', ');
-      var point = document.querySelector(selector);
+      var base = document.querySelector(selector);
+      base.parentNode.insertBefore(_message_node, base.nextSibling);
       _message_node.setAttribute('id', 'message');
-      point.insertAdjacentElement('afterEnd', _message_node);
       return _message_node;
     };
   })(SiteScript.prototype);
