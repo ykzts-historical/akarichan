@@ -408,15 +408,11 @@
     var self = this;
     var req = new XMLHttpRequest();
     req.addEventListener('readystatechange', function() {
-      if (req.readyState !== 4)
+      if (req.readyState !== XMLHttpRequest.DONE)
         return;
-      var res = req.responseXML || (function(text) {
-        try {
-          return JSON.parse(text);
-        } catch (e) {
-          return text;
-        }
-      })(req.responseText);
+      var content_type = req.getResponseHeader('Content-type');
+      var res = content_type.split(/\/|; /)[1] === 'json' ?
+        JSON.parse(req.responseText) : req.responseXML;
       callback.call(self, res);
     }, false);
     req.open(options.method || 'GET', options.uri);
