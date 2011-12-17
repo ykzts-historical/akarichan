@@ -7,7 +7,7 @@
             <dt>Blog Name</dt>
             <dd class="blog_name"><%= article.blog_name %></dd>
             <dt>Date</dt>
-            <dd><time datetime="<%= article.date.toISOString() %>"><%= article.date %></time></dd>
+            <dd><time pubdate="pubdate" datetime="<%= article.date.toISOString() %>"><%= article.date %></time></dd>
             <dt>POST URI</dt>
             <dd><cite><a href="<%= article.uri %>" class="uri"><%= article.uri %></a></cite></dd>
           </dl>
