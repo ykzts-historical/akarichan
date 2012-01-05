@@ -391,7 +391,42 @@
   })(AppendPage.prototype);
 
   document.addEventListener('DOMContentLoaded', function() {
-    window.ss = new SiteScript();
+    var ss = window.ss = new SiteScript();
+    if (ss.ap.username === '_dashboard' && location.search === '?autoreload') {
+      var body = document.getElementsByTagName('body')[0];
+      var first_article = ss.ap.articles[0];
+      var since_id = first_article.id.match(/^id-(\d+)$/)[1] || 0;
+      var source = new EventSource('/stream?since_id=' + since_id);
+      source.addEventListener('error', function() {
+        source.close();
+      }, false);
+      source.addEventListener('message', function(event) {
+        var articles = JSON.parse(event.data);
+        articles.reverse();
+        articles.forEach(function(article) {
+          var template = first_article.cloneNode(true);
+          var image = template.getElementsByTagName('img')[0];
+          var blog_name = template.getElementsByClassName('blog_name')[0];
+          var time = template.getElementsByTagName('time')[0];
+          var a = template.getElementsByClassName('uri')[0];
+          var form = template.getElementsByTagName('form')[0];
+          var input = form.getElementsByTagName('input')[0];
+          template.id = 'id-' + article.id;
+          body.insertBefore(template, body.firstChild);
+          if (article.reblogged) {
+            template.setAttribute('class', 'reblogged');
+          }
+          image.setAttribute('src', article.photo_uri);
+          blog_name.textContent = article.blog_name;
+          time.textContent = new Date(article.date);
+          time.setAttribute('datetime', article.date);
+          a.textContent = article.uri;
+          a.setAttribute('href', article.uri);
+          form.setAttribute('action', '/_reblog/' + article.id);
+          input.setAttribute('value', article.reblog_key);
+        });
+      }, false);
+    }
   }, false);
 
   function toArray(obj) {
