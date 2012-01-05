@@ -7,6 +7,7 @@ module.exports = [
     var username = req.query.tumblr_username;
     res.redirect('/' + username);
   }],
+  ['GET', '/stream', views.stream],
   ['GET', '/_oauth/:action(sign(in|out))', views.oauth.login],
   [['GET', 'POST'], '/_settings', views.settings],
   [['GET', 'POST'], '/_reblog/:id(\\d+)', views.reblog],
