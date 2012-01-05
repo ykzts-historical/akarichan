@@ -28,10 +28,10 @@ exports.index = function(req, res) {
       tum.on('data', function(data) {
         var posts = data.response.posts || [];
         var articles = posts.map(utils.post_simplify, {blog_url: blog_url});
-        //if (!articles.length) {
-        //  return;
-        //}
-        //options.since_id = articles[0].id;
+        if (!articles.length) {
+          return;
+        }
+        options.since_id = articles[0].id;
         var body = '';
         var values = {
           id: options.since_id,
