@@ -325,6 +325,7 @@
     $.open = function(article) {
       var anchor = article.querySelector('a.uri');
       var event = document.createEvent('MouseEvent');
+      anchor.setAttribute('target', '_blank');
       event.initMouseEvent('click', true, true, window,
         0, 0, 0, 0, 0, false, false, false, false, 1, null);
       anchor.dispatchEvent(event);
