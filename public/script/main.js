@@ -258,7 +258,7 @@
         remove_event();
         return;
       }
-      if (window.scrollY < articles[len-2].offsetTop)
+      if (window.scrollY < articles[len-3].offsetTop)
         return;
       remove_event();
       this.load_next();
@@ -278,7 +278,8 @@
       var self = this;
       if (this.uri !== URI) {
         URI = this.uri;
-        window.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
+        if (window.history.pushState)
+          window.history.pushState({uri: this.uri}, this.ss.page_title, this.uri);
       }
       this.ss.page_title = this.ss.message = 'loading...';
       xhr.call(this, {uri: this.uri}, this.append);
@@ -443,14 +444,16 @@
   function xhr(options, callback) {
     var self = this;
     var req = new XMLHttpRequest();
-    req.addEventListener('readystatechange', function() {
-      if (req.readyState !== XMLHttpRequest.DONE)
+    //req.addEventListener('readystatechange', function() {
+    req.onreadystatechange = function() {
+      if (req.readyState !== (XMLHttpRequest.DONE || 4))
         return;
       var content_type = req.getResponseHeader('Content-type');
       var res = content_type.split(/\/|; /)[1] === 'json' ?
         JSON.parse(req.responseText) : req.responseXML;
       callback.call(self, res);
-    }, false);
+    };
+    //}, false);
     req.open(options.method || 'GET', options.uri);
     req.send(options.form_data || null);
     return req;
