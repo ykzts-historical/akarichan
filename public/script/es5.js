@@ -15,6 +15,9 @@
   Object.defineProperty = Object.defineProperty || function defineProperty(obj, prop, desc) {
     Object.keys(desc).forEach(function(item) {
       switch (item) {
+        case 'value':
+          obj[prop] = desc[item];
+          break;
         case 'get':
           obj.__defineGetter__(prop, desc[item]);
           break;
