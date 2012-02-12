@@ -3,9 +3,7 @@
       <nav>
         <ul>
 <% if (session.user) { %>
-<%   if (username !== '_dashboard') { %>
           <li><a href="/_dashboard">Dashboard</a></li>
-<%   } %>
           <li><a href="/_settings">Settings</a></li>
           <li><a href="/_oauth/signout">Sign out</a></li>
 <% } else { %>
