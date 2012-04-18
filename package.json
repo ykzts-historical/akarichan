@@ -2,7 +2,7 @@
   "name": "akarichan",
   "version": "0.0.1",
   "dependencies": {
-    "express": ">= 2.5.1",
+    "express": "2.x",
     "connect-redis": ">= 1.2.0",
     "oauth": ">= 0.9.5"
   }
